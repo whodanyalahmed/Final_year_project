@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <link rel="stylesheet" href="../css/myStyle.css">
+</head>
+
+<body>
+
+    <div class="result">
+        <h2>Search Result</h2>
+    </div>
+
+    <div class="display" id="dis">
+        <div class="d-flex justify-content-center h">
+            <div class="card" style="width: 18rem;">
+                <h5 class="text-center">Minimum Price</h5>
+                <img class="card-img-top" src="" id="img" alt="min image">
+                <div class="card-body">
+                    <h5 class="card-title" id="title">Card title</h5>
+                    <p class="card-text" id="descmin"></p>
+                    <p id="price"></p>
+                    <a href="#" class="btn btn-primary">Get Details</a>
+                </div>
+            </div>
+            <div class="space"></div>
+            <div class="card" style="width: 18rem;">
+                <h5 class="text-center">Maximum Price</h5>
+                <img class="card-img-top" src="" id="img1" alt="max image">
+                <div class="card-body">
+                    <h5 class="card-title" id="title1">Card title</h5>
+                    <p class="card-text" id="descmax"></p>
+                    <p id="price1"></p>
+                    <a href="#" class="btn btn-primary">Get Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="cont" style="display: none;">
+        <h2 class="text-center">No such item found!</h2>
+    </div>
+
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/popper.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script  src="JS/app.js"></script>
+</body>
+
+
+</html>
