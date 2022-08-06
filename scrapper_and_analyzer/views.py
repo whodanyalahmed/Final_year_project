@@ -1,4 +1,5 @@
 from numpy import Infinity
+from scrapper_and_analyzer.backend.pakmobizone import pakmobizone_main
 from scrapper_and_analyzer.backend.priceoye import priceOye_main
 from scrapper_and_analyzer.backend.daraz import daraz_main
 from django.shortcuts import redirect, render
@@ -16,10 +17,10 @@ def home(request):
     return render(request, 'index.html')
 
 
-def get_min_max_price(daraz, priceOye, third_website):
+def get_min_max_price(daraz, priceOye, pakmobizone):
 
     price_array = [daraz['price'],
-                   priceOye['price'], third_website['price']]
+                   priceOye['price'], pakmobizone['price']]
     lowest_price = min(price_array)
     # find the highest price
     highest_price = max(price_array)
@@ -32,14 +33,14 @@ def get_min_max_price(daraz, priceOye, third_website):
     elif(lowest_index == 1):
         min_price_product = priceOye
     else:
-        min_price_product = third_website
+        min_price_product = pakmobizone
 
     if(highest_index == 0):
         max_price_product = daraz
     elif(highest_index == 1):
         max_price_product = priceOye
     else:
-        max_price_product = third_website
+        max_price_product = pakmobizone
     return min_price_product, max_price_product
 
 
@@ -75,19 +76,15 @@ def result(request):
                     }
                 try:
 
-                    third_website = {
-                        "name": "Demo Product",
-                        "price": (priceOye['price'] + daraz['price'])/2,
-                        "src": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
-                    }
+                    pakmobizone = pakmobizone_main(keyword)
                 except:
-                    third_website = {
+                    pakmobizone = {
                         "name": "No Product found",
                         "price": Infinity,
                         "src": "static/images/not_found.svg"
                     }
 
-                if(daraz['name'] == "No Product found" and priceOye['name'] == "No Product found" and third_website['name'] == "No Product found"):
+                if(daraz['name'] == "No Product found" and priceOye['name'] == "No Product found" and pakmobizone['name'] == "No Product found"):
                     return render(request, 'results.html', context={'msg': "error", "text": "No result found!"})
 
                 # find the lowest price
@@ -95,10 +92,10 @@ def result(request):
                 # set values in session
                 request.session['daraz'] = daraz
                 request.session['priceOye'] = priceOye
-                request.session['third_website'] = third_website
+                request.session['pakmobizone'] = pakmobizone
                 min_price_product, max_price_product = get_min_max_price(
-                    daraz, priceOye, third_website)
-                return render(request, 'results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "third_website": third_website, "min_price_product": min_price_product, "max_price_product": max_price_product})
+                    daraz, priceOye, pakmobizone)
+                return render(request, 'results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "min_price_product": min_price_product, "max_price_product": max_price_product})
             except Exception as e:
                 return render(request, 'results.html', context={'msg': "error", "text": "Can't find the product or may not exist!"})
     if request.method == 'GET':
@@ -106,9 +103,9 @@ def result(request):
         try:
             daraz = request.session['daraz']
             priceOye = request.session['priceOye']
-            third_website = request.session['third_website']
+            pakmobizone = request.session['pakmobizone']
             min_price_product, max_price_product = get_min_max_price(
-                daraz, priceOye, third_website)
-            return render(request, 'results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "third_website": third_website, "min_price_product": min_price_product, "max_price_product": max_price_product})
+                daraz, priceOye, pakmobizone)
+            return render(request, 'results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "min_price_product": min_price_product, "max_price_product": max_price_product})
         except:
             return redirect('index')

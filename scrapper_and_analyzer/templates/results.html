@@ -1,4 +1,6 @@
 {% load static %}
+
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -106,7 +108,7 @@
             <h5 class="card-title" id="title">{{min_price_product.name}}</h5>
             <p class="card-text" id="descmin"></p>
             <p class="text-green-500 font-weight-bold">Rs. {{min_price_product.price}} /=</p>
-            <a href="#" class="btn btn-primary">Get Details</a>
+            <a href="{{min_price_product.link |intcomma}}" target="_blank" class="btn btn-primary">Get Details</a>
           </div>
         </div>
         <div class="space"></div>
@@ -118,8 +120,8 @@
           <div class="card-body">
             <h5 class="card-title" id="title1">{{max_price_product.name}}</h5>
             <p class="card-text" id="descmax"></p>
-            <p class="text-red-600 font-weight-bold">Rs. {{max_price_product.price}} /=</p>
-            <a href="#" class="btn btn-primary">Get Details</a>
+            <p class="text-red-600 font-weight-bold">Rs. {{'{:,}'.format(max_price_product.price)}} /=</p>
+            <a href="{{max_price_product.link |intcomma }}" target="_blank" class="btn btn-primary">Get Details</a>
           </div>
         </div>
       </div>
@@ -139,17 +141,17 @@
             <tr>
               <td>Daraz.pk</td>
               <td>{{ daraz.name }}</td>
-              <td>{{ daraz.price }}</td>
+              <td>{{ daraz.price |intcomma }}</td>
             </tr>
             <tr>
               <td>PriceOye.pk</td>
               <td>{{ priceOye.name }}</td>
-              <td>{{ priceOye.price }}</td>
+              <td>{{ priceOye.price |intcomma }}</td>
             </tr>
             <tr>
-              <td>Third Website</td>
-              <td>{{ third_website.name }}</td>
-              <td>{{ third_website.price}}</td>
+              <td>Pakmobizone</td>
+              <td>{{ pakmobizone.name }}</td>
+              <td>{{ pakmobizone.price |intcomma}}</td>
             </tr>
           </tbody>
         </table>
