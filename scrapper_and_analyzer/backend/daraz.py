@@ -113,6 +113,7 @@ def daraz_main(keyword):
 
     driver.quit()
     index = price_list.index(str(minprice))
+
     return {"price": minprice, "name": minname, "src": image_list[index], "link": link_list[index]}
 
 

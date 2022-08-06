@@ -49,6 +49,7 @@ def priceOye_main(keyword):
     price_list = []
     title_list = []
     image_list = []
+    link_list = []
     keyword_url = keyword.replace(' ', '+')
     driver = Chrome(True)
     url = 'https://priceoye.pk/search?q=' + keyword_url
@@ -62,6 +63,8 @@ def priceOye_main(keyword):
 
         img = div.find_element_by_xpath(
             './/div[@class="image-box desktop"]/amp-img')
+        link = div.find_element_by_xpath(
+            'a').get_attribute('href')
         # get src attribute of amp-img
         src = img.get_attribute("src")
         image_list.append(src)
@@ -69,10 +72,13 @@ def priceOye_main(keyword):
         details = div.find_element_by_xpath(".//div[@class='detail-box']")
         name = details.find_element_by_class_name("p3")
         title_list.append(name.text)
+        print("link: "+link)
+        link_list.append(link)
         price = details.find_element_by_xpath(".//div[@class='price-box']")
         price = str(price.text)
         price = price.replace("Rs. ", "")
         price = price.replace(",", "")
+        price = int(price)
         price_list.append(price)
 
         print("name: ", name.text)
@@ -81,18 +87,19 @@ def priceOye_main(keyword):
     dt = dict(zip(title_list, price_list))
 
     for k, v in dt.items():
-        v = int(v.replace(",", ""))
 
         if v < minprice:
             minprice = v
             minname = k
 
-    print("Min. price is : ", minprice)
+    print("Min. price is : ", str(minprice))
 
     # return minprice,minname and iamge_link with mincount as index
 
     driver.quit()
-    return {"price": minprice, "name": minname, "src": image_list[price_list.index(str(minprice))]}
+
+    index = price_list.index(minprice)
+    return {"price": minprice, "name": minname, "src": image_list[index],"link":link_list[index]}
 
 
 if __name__ == '__main__':
