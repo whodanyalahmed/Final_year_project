@@ -107,8 +107,8 @@
           <div class="card-body">
             <h5 class="card-title" id="title">{{min_price_product.name}}</h5>
             <p class="card-text" id="descmin"></p>
-            <p class="text-green-500 font-weight-bold">Rs. {{min_price_product.price}} /=</p>
-            <a href="{{min_price_product.link |intcomma}}" target="_blank" class="btn btn-primary">Get Details</a>
+            <p class="text-green-500 font-weight-bold">Rs. {{min_price_product.price |intcomma}} /=</p>
+            <a href="{{min_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
           </div>
         </div>
         <div class="space"></div>
@@ -120,8 +120,8 @@
           <div class="card-body">
             <h5 class="card-title" id="title1">{{max_price_product.name}}</h5>
             <p class="card-text" id="descmax"></p>
-            <p class="text-red-600 font-weight-bold">Rs. {{'{:,}'.format(max_price_product.price)}} /=</p>
-            <a href="{{max_price_product.link |intcomma }}" target="_blank" class="btn btn-primary">Get Details</a>
+            <p class="text-red-600 font-weight-bold">Rs. {{max_price_product.price |intcomma }} /=</p>
+            <a href="{{max_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
           </div>
         </div>
       </div>
@@ -140,17 +140,17 @@
           <tbody>
             <tr>
               <td>Daraz.pk</td>
-              <td>{{ daraz.name }}</td>
+              <td><a href="{{daraz.link}}" target="_blank">{{ daraz.name }}</a></td>
               <td>{{ daraz.price |intcomma }}</td>
             </tr>
             <tr>
               <td>PriceOye.pk</td>
-              <td>{{ priceOye.name }}</td>
+              <td><a href="{{priceOye.link}}" target="_blank">{{ priceOye.name }}</td>
               <td>{{ priceOye.price |intcomma }}</td>
             </tr>
             <tr>
               <td>Pakmobizone</td>
-              <td>{{ pakmobizone.name }}</td>
+              <td><a href="{{pakmobizone.link}}" target="_blank">{{ pakmobizone.name }}</td>
               <td>{{ pakmobizone.price |intcomma}}</td>
             </tr>
           </tbody>
