@@ -64,6 +64,7 @@ def daraz_main(keyword):
     print("="*30)
     product = product_div.find_elements_by_xpath(
         '//div[@class="inner--SODwy"]')
+
     title = product_div.find_elements_by_xpath(
         '//div[@class="title--wFj93"]')
     price = product_div.find_elements_by_xpath(
@@ -76,11 +77,15 @@ def daraz_main(keyword):
     price_list = []
     title_list = []
     image_list = []
+    link_list = []
     for i in range(len(title)):
         if keyword.lower() in title[i].text.lower():
 
             print("="*30)
-
+            link = product[i].find_element_by_xpath(
+                'div[1]/div/a').get_attribute('href')
+            print("link: "+str(link))
+            link_list.append(link)
             print(title[i].text)
             title_list.append(title[i].text)
             print(price[i].text)
@@ -107,7 +112,8 @@ def daraz_main(keyword):
     # return minprice,minname and iamge_link with mincount as index
 
     driver.quit()
-    return {"price": minprice, "name": minname, "src": image_list[price_list.index(str(minprice))]}
+    index = price_list.index(str(minprice))
+    return {"price": minprice, "name": minname, "src": image_list[index], "link": link_list[index]}
 
 
 if __name__ == '__main__':
