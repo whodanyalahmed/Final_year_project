@@ -59,6 +59,7 @@ def result(request):
     if request.method == 'POST':
 
         keyword = request.POST.get('keyword')
+        current_url = request.POST.get('url')
         print(keyword)
         if(not bool(keyword)):
             return render(request, 'results.html', context={'msg': "error", "text": "No keyword entered!"})
@@ -101,9 +102,10 @@ def result(request):
                 request.session['daraz'] = daraz
                 request.session['priceOye'] = priceOye
                 request.session['pakmobizone'] = pakmobizone
+                request.session['current_url'] = current_url
                 min_price_product, max_price_product = get_min_max_price(
                     daraz, priceOye, pakmobizone)
-                return render(request, 'results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "min_price_product": min_price_product, "max_price_product": max_price_product})
+                return render(request, 'results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "min_price_product": min_price_product, "max_price_product": max_price_product,"current_url": current_url})
             except Exception as e:
                 return render(request, 'results.html', context={'msg': "error", "text": "Can't find the product or may not exist!"})
     if request.method == 'GET':
@@ -112,8 +114,9 @@ def result(request):
             daraz = request.session['daraz']
             priceOye = request.session['priceOye']
             pakmobizone = request.session['pakmobizone']
+            current_url = request.session['current_url']
             min_price_product, max_price_product = get_min_max_price(
                 daraz, priceOye, pakmobizone)
-            return render(request, 'results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "min_price_product": min_price_product, "max_price_product": max_price_product})
+            return render(request, 'results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "min_price_product": min_price_product, "max_price_product": max_price_product,"current_url": current_url})
         except:
-            return redirect('index')
+            return redirect('Dashboard')
