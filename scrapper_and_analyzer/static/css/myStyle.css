@@ -38,7 +38,7 @@ body {
     -webkit-transition: .3s all ease;
     -o-transition: .3s all ease;
     transition: .3s all ease;
-    color: #f1bc31; }
+    color: #BB9B6B; }
     a:hover, a:focus {
       text-decoration: none !important;
       outline: none !important;
@@ -53,7 +53,7 @@ body {
     color: #000; }
   
   .bg-primary {
-    background: #f1bc31 !important; }
+    background: #BB9B6B !important; }
   
   /* .ftco-section {
     padding: 7em 0; } */
@@ -105,7 +105,7 @@ body {
         height: 100%;
         bottom: 0;
         left: 0;
-        background-color: #f1bc31;
+        background-color: #BB9B6B;
         visibility: hidden;
         -webkit-transform: scaleX(0);
         -ms-transform: scaleX(0);
@@ -118,7 +118,7 @@ body {
         color: #fff; }
         .ftco-navbar-light .navbar-nav > .nav-item > .nav-link:hover:before {
           visibility: visible;
-          background-color: #f1bc31;
+          background-color: #BB9B6B;
           -webkit-transform: scaleX(1);
           -ms-transform: scaleX(1);
           transform: scaleX(1); }
@@ -154,7 +154,7 @@ body {
             color: rgba(255, 255, 255, 0.8); } }
     .ftco-navbar-light .navbar-nav > .nav-item.cta > a {
       color: #fff;
-      background: #f1bc31;
+      background: #BB9B6B;
       border-radius: 0px; }
       @media (max-width: 767.98px) {
         .ftco-navbar-light .navbar-nav > .nav-item.cta > a {
@@ -169,13 +169,13 @@ body {
       color: #fff; }
       .ftco-navbar-light .navbar-nav > .nav-item.active > a:before {
         visibility: visible;
-        background-color: #f1bc31;
+        background-color: #BB9B6B;
         -webkit-transform: scaleX(1);
         -ms-transform: scaleX(1);
         transform: scaleX(1); }
       @media (max-width: 991.98px) {
         .ftco-navbar-light .navbar-nav > .nav-item.active > a {
-          color: #f1bc31; }
+          color: #BB9B6B; }
           .ftco-navbar-light .navbar-nav > .nav-item.active > a:before {
             display: none; } }
     .ftco-navbar-light .navbar-toggler {
@@ -214,8 +214,8 @@ body {
       .social-media p a span {
         color: #4d4d4d; }
       .social-media p a:hover {
-        background: #f1bc31;
-        border-color: #f1bc31; }
+        background: #BB9B6B;
+        border-color: #BB9B6B; }
         .social-media p a:hover span {
           color: #fff; }
   
@@ -278,4 +278,14 @@ body {
   opacity: 0;
   transition: 0.3s ease-in-out;
   display:none !important;
+}
+.my-color{
+  color:#BB9B6B;
+}
+
+.my-bg{
+  background-color:#BB9B6B;
+}
+.verticalLine {
+  border-left: thick solid #BB9B6B;
 }

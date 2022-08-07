@@ -2,6 +2,7 @@ from numpy import Infinity
 from scrapper_and_analyzer.backend.pakmobizone import pakmobizone_main
 from scrapper_and_analyzer.backend.priceoye import priceOye_main
 from scrapper_and_analyzer.backend.daraz import daraz_main
+from django.urls import resolve
 from django.shortcuts import redirect, render
 import sys
 from django.views.decorators.cache import cache_control
@@ -13,8 +14,15 @@ sys.path.append('../')
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def home(request):
+    
+    current_url = resolve(request.path_info).url_name
+    return render(request, 'index.html', context={'current_url': current_url})
 
-    return render(request, 'index.html')
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def Minimum(request):
+    current_url = resolve(request.path_info).url_name
+    return render(request, 'minimum.html', context={'current_url': current_url})
 
 
 def get_min_max_price(daraz, priceOye, pakmobizone):
