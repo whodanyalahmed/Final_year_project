@@ -1,4 +1,6 @@
+import json
 from numpy import Infinity
+from scrapper_and_analyzer import urls
 from scrapper_and_analyzer.backend.pakmobizone import pakmobizone_main
 from scrapper_and_analyzer.backend.priceoye import priceOye_main
 from scrapper_and_analyzer.backend.daraz import daraz_main
@@ -7,14 +9,22 @@ from django.shortcuts import redirect, render
 import sys
 from django.views.decorators.cache import cache_control
 sys.path.append('../')
+from django.template.defaulttags import register
 
 # import daraz.py from python folder
 # Create your views here.
 
+@register.filter
+def index(sequence, position):
+    return sequence[position]
+
+@register.filter
+def get_value(dictionary, key):
+    return dictionary.get(key)
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def home(request):
-    
+
     current_url = resolve(request.path_info).url_name
     return render(request, 'index.html', context={'current_url': current_url})
 
@@ -23,6 +33,24 @@ def home(request):
 def Minimum(request):
     current_url = resolve(request.path_info).url_name
     return render(request, 'minimum.html', context={'current_url': current_url})
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def maximum(request):
+    current_url = resolve(request.path_info).url_name
+    return render(request, 'maximum.html', context={'current_url': current_url})
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def _list(request):
+    current_url = resolve(request.path_info).url_name
+    return render(request, 'list.html', context={'current_url': current_url})
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def prediction(request):
+    current_url = resolve(request.path_info).url_name
+    return render(request, 'prediction.html', context={'current_url': current_url})
 
 
 def get_min_max_price(daraz, priceOye, pakmobizone):
@@ -65,58 +93,94 @@ def result(request):
             return render(request, 'results.html', context={'msg': "error", "text": "No keyword entered!"})
         else:
             # call scrapper function
-            try:
+            print("current_url: ", current_url)
+            if (current_url != 'list'):
                 try:
+                    try:
 
-                    priceOye = priceOye_main(keyword)
-                except:
-                    priceOye = {
-                        "name": "No Product found",
-                        "price": Infinity,
-                        "src": "static/images/not_found.svg"
-                    }
-                try:
-                    daraz = daraz_main(keyword)
-                except:
-                    daraz = {
-                        "name": "No Product found",
-                        "price": Infinity,
-                        "src": "static/images/not_found.svg"
-                    }
-                try:
+                        priceOye = priceOye_main(keyword, "result")
+                    except:
+                        priceOye = {
+                            "name": "No Product found",
+                            "price": Infinity,
+                            "src": "static/images/not_found.svg"
+                        }
+                    try:
+                        daraz = daraz_main(keyword, "result")
+                    except:
+                        daraz = {
+                            "name": "No Product found",
+                            "price": Infinity,
+                            "src": "static/images/not_found.svg"
+                        }
+                    try:
 
-                    pakmobizone = pakmobizone_main(keyword)
-                except:
-                    pakmobizone = {
-                        "name": "No Product found",
-                        "price": Infinity,
-                        "src": "static/images/not_found.svg"
-                    }
+                        pakmobizone = pakmobizone_main(keyword, "result")
+                    except:
+                        pakmobizone = {
+                            "name": "No Product found",
+                            "price": Infinity,
+                            "src": "static/images/not_found.svg"
+                        }
 
-                if(daraz['name'] == "No Product found" and priceOye['name'] == "No Product found" and pakmobizone['name'] == "No Product found"):
-                    return render(request, 'results.html', context={'msg': "error", "text": "No result found!"})
+                    if(daraz['name'] == "No Product found" and priceOye['name'] == "No Product found" and pakmobizone['name'] == "No Product found"):
+                        return render(request, 'results.html', context={'msg': "error", "text": "No result found!"})
 
-                # find the lowest price
+                    # find the lowest price
 
-                # set values in session
+                    # set values in session
+                    request.session['daraz'] = daraz
+                    request.session['priceOye'] = priceOye
+                    request.session['pakmobizone'] = pakmobizone
+                    request.session['current_url'] = current_url
+                    min_price_product, max_price_product = get_min_max_price(
+                        daraz, priceOye, pakmobizone)
+                    return render(request, 'results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "min_price_product": min_price_product, "max_price_product": max_price_product, "current_url": current_url})
+                except Exception as e:
+                    return render(request, 'results.html', context={'msg': "error", "text": "Can't find the product or may not exist!"})
+            else:
+                daraz = daraz_main(keyword, "list")
+                priceOye = priceOye_main(keyword, "list")
+                pakmobizone = pakmobizone_main(keyword, "list")
+
                 request.session['daraz'] = daraz
                 request.session['priceOye'] = priceOye
                 request.session['pakmobizone'] = pakmobizone
                 request.session['current_url'] = current_url
-                min_price_product, max_price_product = get_min_max_price(
-                    daraz, priceOye, pakmobizone)
-                return render(request, 'results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "min_price_product": min_price_product, "max_price_product": max_price_product,"current_url": current_url})
-            except Exception as e:
-                return render(request, 'results.html', context={'msg': "error", "text": "Can't find the product or may not exist!"})
+
+                return redirect('list_result')
     if request.method == 'GET':
         # get values fromm session
-        try:
-            daraz = request.session['daraz']
-            priceOye = request.session['priceOye']
-            pakmobizone = request.session['pakmobizone']
-            current_url = request.session['current_url']
-            min_price_product, max_price_product = get_min_max_price(
-                daraz, priceOye, pakmobizone)
-            return render(request, 'results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "min_price_product": min_price_product, "max_price_product": max_price_product,"current_url": current_url})
-        except:
-            return redirect('Dashboard')
+        current_url = request.session['current_url']
+        daraz = request.session['daraz']
+        priceOye = request.session['priceOye']
+        pakmobizone = request.session['pakmobizone']
+        if current_url != 'list':
+            try:
+                min_price_product, max_price_product = get_min_max_price(
+                    daraz, priceOye, pakmobizone)
+                return render(request, 'results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "min_price_product": min_price_product, "max_price_product": max_price_product, "current_url": current_url})
+            except:
+                return redirect('Dashboard')
+        else:
+            return redirect('list_result')
+
+
+def list_results(request):
+    # get values fromm session
+    daraz = request.session['daraz']
+    priceOye = request.session['priceOye']
+    pakmobizone = request.session['pakmobizone']
+    current_url = request.session['current_url']
+
+    # daraz = json.dumps(daraz)
+    # priceOye = json.dumps(priceOye)
+    # pakmobizone = json.dumps(pakmobizone)
+    # daraz range
+    daraz_range = len(daraz['names'])
+    # priceOye range
+    priceOye_range = len(priceOye['names'])
+    # pakmobizone range
+    pakmobizone_range = len(pakmobizone['names'])
+
+    return render(request, 'list_results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "current_url": current_url, "daraz_range": daraz_range, "priceOye_range": priceOye_range, "pakmobizone_range": pakmobizone_range})

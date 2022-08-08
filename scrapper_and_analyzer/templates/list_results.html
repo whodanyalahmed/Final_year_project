@@ -18,7 +18,10 @@
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-
+    <link rel="stylesheet" 
+    href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css"
+    />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css"/>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 
     <link rel="stylesheet" href="{% static 'css/myStyle.css' %}" />
@@ -51,12 +54,12 @@
           </button>
           <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
+              <li class="nav-item ">
                 <a href="/" class="nav-link">Dashboard</a>
               </li>
               <li class="nav-item"><a href="{% url 'minimum' %}" class="nav-link">Minimum</a></li>
               <li class="nav-item"><a href="{% url 'maximum' %}" class="nav-link">Maximum</a></li>
-              <li class="nav-item"><a href="{% url 'list' %}" class="nav-link">List</a></li>
+              <li class="nav-item active"><a href="{% url 'list' %}" class="nav-link">List</a></li>
               <li class="nav-item">
                 <a href="{% url 'prediction' %}" class="nav-link">Prediction</a>
               </li>
@@ -103,78 +106,11 @@
       </div>
     </div>
     {% elif msg == "success" %}
-    {% if current_url == "dashboard" %}
-    
-    <div class="display" id="dis" style="display:block;">
-      <div class="d-flex justify-content-center h">
-        <div class="card" style="width: 18rem">
-          <div class="card-header">
-            <h5 class="text-center">Minimum Price</h5>
-          </div>
-          <img class="card-img-top" src="{{min_price_product.src}}" id="img" alt="min image" />
-          <div class="card-body">
-            <h5 class="card-title" id="title">{{min_price_product.name}}</h5>
-            <p class="card-text" id="descmin"></p>
-            <p class="text-green-500 font-weight-bold">Rs. {{min_price_product.price |intcomma}} /=</p>
-            <a href="{{min_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
-          </div>
-        </div>
-        <div class="space"></div>
-        <div class="card" style="width: 18rem">
-          <div class="card-header">
-            <h5 class="text-center">Maximum Price</h5>
-          </div>
-          <img class="card-img-top" src="{{max_price_product.src}}" id="img1" alt="max image" />
-          <div class="card-body">
-            <h5 class="card-title" id="title1">{{max_price_product.name}}</h5>
-            <p class="card-text" id="descmax"></p>
-            <p class="text-red-600 font-weight-bold">Rs. {{max_price_product.price |intcomma }} /=</p>
-            <a href="{{max_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    {% elif current_url == "minimum" %}
-    <div class="display" id="dis" style="display:block;">
-      <div class="d-flex justify-content-center h">
-        <div class="card" style="width: 18rem">
-          <div class="card-header">
-            <h5 class="text-center">Minimum Price</h5>
-          </div>
-          <img class="card-img-top" src="{{min_price_product.src}}" id="img" alt="min image" />
-          <div class="card-body">
-            <h5 class="card-title" id="title">{{min_price_product.name}}</h5>
-            <p class="card-text" id="descmin"></p>
-            <p class="text-green-500 font-weight-bold">Rs. {{min_price_product.price |intcomma}} /=</p>
-            <a href="{{min_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% elif current_url == "maximum" %}
-    <div class="display" id="dis" style="display:block;">
-      <div class="d-flex justify-content-center h">
-        <div class="card" style="width: 18rem">
-          <div class="card-header">
-            <h5 class="text-center">Maximum Price</h5>
-          </div>
-          <img class="card-img-top" src="{{max_price_product.src}}" id="img" alt="min image" />
-          <div class="card-body">
-            <h5 class="card-title" id="title">{{max_price_product.name}}</h5>
-            <p class="card-text" id="descmin"></p>
-            <p class="text-red-500 font-weight-bold">Rs. {{max_price_product.price |intcomma}} /=</p>
-            <a href="{{max_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    {% endif %}
+   
     
     <div class="container">
       <div class="col-12">
-        <table class="table table-striped table-hover">
+        <table class="table table-striped table-hover hover" id="myTable">
           <thead>
             <tr>
               <th>Website</th>
@@ -183,31 +119,81 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Daraz.pk</td>
-              <td><a href="{{daraz.link}}" target="_blank">{{ daraz.name }}</a></td>
-              <td>{{ daraz.price |intcomma }}</td>
-            </tr>
-            <tr>
-              <td>PriceOye.pk</td>
-              <td><a href="{{priceOye.link}}" target="_blank">{{ priceOye.name }}</td>
-              <td>{{ priceOye.price |intcomma }}</td>
-            </tr>
-            <tr>
-              <td>Pakmobizone</td>
-              <td><a href="{{pakmobizone.link}}" target="_blank">{{ pakmobizone.name }}</td>
-              <td>{{ pakmobizone.price |intcomma}}</td>
-            </tr>
+            {% with ''|center:daraz_range as range %}
+            {% for _ in range %}
+                    
+                    <tr>
+                        <td>Daraz.pk</td>
+                        <td><a href="{{daraz.links | index:forloop.counter0 }}" target="_blank">{{daraz.names | index:forloop.counter0 }}</a></td>
+                        <td>{{daraz.prices | index:forloop.counter0 }}</td>
+                    </tr>
+                    
+            {% endfor %}
+            {% endwith %}
+            {% with ''|center:priceOye_range as range %}
+            {% for _ in range %}
+                    
+                    <tr>
+                        <td>PriceOye</td>
+                        <td><a href="{{priceOye.links | index:forloop.counter0 }}" target="_blank">{{priceOye.names | index:forloop.counter0 }}</a></td>
+                        <td>{{priceOye.prices | index:forloop.counter0 }}</td>
+                    </tr>
+                    
+            {% endfor %}
+            {% endwith %}
+       
+            {% with ''|center:pakmobizone_range as range %}
+            {% for _ in range %}
+                    
+                    <tr>
+                        <td>pakmobizone</td>
+                        <td><a href="{{pakmobizone.links | index:forloop.counter0 }}" target="_blank">{{pakmobizone.names | index:forloop.counter0 }}</a></td>
+                        <td>{{pakmobizone.prices | index:forloop.counter0 }}</td>
+                    </tr>
+                    
+            {% endfor %}
+            {% endwith %}
+       
           </tbody>
         </table>
       </div>
     </div>
     
     {% endif %}
+   
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.bootstrap4.min.js"></script> 
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script> 
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.5/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.5/vfs_fonts.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        $(document).ready( function () {
+            $('#myTable').DataTable(
+                {
+                    dom: 'Bfrtip',
+                    buttons: [
+                    'copy', 'excel', 'pdf', 'csv'
+                    ]
+                }
+            );
 
-      {% comment %} change .nav-item active class with current url {% endcomment %}
-      var current_url = "{{ current_url }}";
+
+            var dt_buttons = document.getElementsByClassName('dt-button');
+            for (var i = 0; i < dt_buttons.length; i++) {
+                dt_buttons[i].className += ' btn btn-sm btn-outline-warning';
+        
+            }
+        } );
+
+     var current_url = "{{current_url}}"
       var nav_item = document.getElementsByClassName("nav-item");
       var nav_link = document.getElementsByClassName("nav-link");
       for (var i = 0; i < nav_item.length; i++) {
@@ -225,10 +211,5 @@
         }, 2000);
       };
     </script>
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/popper.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/main.js' %}"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
   </body>
 </html>

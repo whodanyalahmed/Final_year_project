@@ -288,5 +288,16 @@ body {
 }
 .verticalLine {
   border-left: thick solid #BB9B6B;
-  
+  transition:0.3s ease-in-out;  
+}
+.verticalLine:hover {
+  border-left: 15px solid #BB9B6B;
+
+}
+
+
+.dt-buttons .dt-button{
+  position: relative !important;
+  top: 30px !important;
+  margin-right:5px;
 }

@@ -44,7 +44,7 @@ minname = ""
 mincount = 0
 
 
-def pakmobizone_main(keyword):
+def pakmobizone_main(keyword, choice):
 
     global minprice
     global minname
@@ -107,7 +107,10 @@ def pakmobizone_main(keyword):
     # find div with id root
     driver.quit()
     index = price_list.index(minprice)
-    return {"price": minprice, "name": minname, "src": image_list[index], "link": link_list[index]}
+    if choice == "result":
+        return {"price": minprice, "name": minname, "src": image_list[index], "link": link_list[index]}
+    else:
+        return {"names": title_list, "prices": price_list, "images": image_list, "links": link_list}
 
 
 if __name__ == '__main__':

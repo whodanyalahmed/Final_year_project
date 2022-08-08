@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Product Scraper & Analyzer | Minimum</title>
+    <title>Product Scraper & Analyzer | {{current_url}}</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -65,10 +65,10 @@
                 <a href="/" class="nav-link">Dashboard</a>
               </li>
               <li class="nav-item active"><a href="{% url 'minimum' %}" class="nav-link">Minimum</a></li>
-              <li class="nav-item"><a href="#" class="nav-link">Maximum</a></li>
-              <li class="nav-item"><a href="#" class="nav-link">List</a></li>
+              <li class="nav-item"><a href="{% url 'maximum' %}" class="nav-link">Maximum</a></li>
+              <li class="nav-item"><a href="{% url 'list' %}" class="nav-link">List</a></li>
               <li class="nav-item">
-                <a href="#" class="nav-link">Prediction</a>
+                <a href="{% url 'prediction' %}" class="nav-link">Prediction</a>
               </li>
             </ul>
           </div>

@@ -42,7 +42,7 @@ minname = ""
 mincount = 0
 
 
-def priceOye_main(keyword):
+def priceOye_main(keyword,choice):
     global minprice
     global minname
     global mincount
@@ -99,8 +99,10 @@ def priceOye_main(keyword):
     driver.quit()
 
     index = price_list.index(minprice)
-    return {"price": minprice, "name": minname, "src": image_list[index],"link":link_list[index]}
-
+    if(choice == "result"):
+        return {"price": minprice, "name": minname, "src": image_list[index],"link":link_list[index]}
+    else:
+        return {"names": title_list, "prices": price_list, "images": image_list, "links": link_list}
 
 if __name__ == '__main__':
     d = priceOye_main("Iphone 11")
