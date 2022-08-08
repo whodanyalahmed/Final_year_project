@@ -1,0 +1,10 @@
+selenium
+numpy
+pandas
+django
+django-q
+redis
+gunicorn
+beautifulsoup4
+requests
+selenium-webdriver
