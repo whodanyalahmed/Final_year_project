@@ -1,1 +1,1 @@
-web: gunicorn FYP.wsgi
+web: python manage.py collectstatic --no-input; gunicorn FYP.wsgi
