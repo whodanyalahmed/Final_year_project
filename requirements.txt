@@ -1,0 +1,12 @@
+selenium==3.141.0
+numpy
+pandas
+django
+django-q
+redis
+gunicorn
+beautifulsoup4
+requests
+webdriver-manager
+openpyxl
+whitenoise
