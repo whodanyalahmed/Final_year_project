@@ -316,3 +316,32 @@ body {
   color:rgb(236, 236, 236) !important;
 }
 
+#myTable_paginate{
+  position: relative;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  vertical-align: middle;
+}
+/* media query for screen less then 768 */
+@media (max-width: 768px) {
+  #myTable{
+    position: relative;
+    top: 70px;
+  }
+  #myTable_filter{
+    position: absolute;
+    top: 20px;
+  }
+  .dt-buttons {
+    position: relative !important;
+    top: 65px !important;
+    margin-right: 5px;
+}
+#myTable_paginate{
+  margin-top:15px;
+}
+#myTable_info{
+  margin-top:70px;
+}
+}

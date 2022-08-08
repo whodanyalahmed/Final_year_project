@@ -25,8 +25,8 @@ SECRET_KEY = 'django-insecure-2112g+-@$gwa5v=5c(943%r3kow1d!ql+52^-adeam*chn@$+x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1",
-                 "192.168.0.100", "https://proscraper.herokuapp.com/","proscraper.herokuapp.com"]
+ALLOWED_HOSTS = ["*", "localhost", "127.0.0.1",
+                 "192.168.0.100", "https://proscraper.herokuapp.com/", "proscraper.herokuapp.com"]
 
 
 # Application definition
@@ -153,4 +153,4 @@ Q_CLUSTER = {
 }
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [ BASE_DIR / 'static' ]
+STATICFILES_DIRS = [BASE_DIR / 'static']

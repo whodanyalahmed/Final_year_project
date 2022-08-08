@@ -5,6 +5,10 @@
 <html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %} ">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %} ">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %} ">
+    <link rel="manifest" href="{% static 'images/site.webmanifest' %} ">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product Scraper & Analyzer | {{current_url}}</title>
@@ -38,7 +42,7 @@
   ">
         <a class="navbar-brand" href="{% url 'Dashboard' %}" style="margin:0px 34px 15px -65px;"><img src="{% static 'images/FYP logo-01.svg' %}" style="height: 50px;margin-top: 10px;margin-left:70px;" ></a>
       
-        <div class="container">
+
           
           <button
             class="navbar-toggler"
@@ -63,7 +67,6 @@
                 <a href="{% url 'prediction' %}" class="nav-link">Prediction</a>
               </li>
             </ul>
-          </div>
         </div>
       </nav>
       <!-- END nav -->
@@ -163,6 +166,7 @@
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/popper.js' %}"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    {% comment %} <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script> {% endcomment %}
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script> 
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.bootstrap4.min.js"></script> 
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
@@ -174,6 +178,13 @@
     <script src="{% static 'js/main.js' %}"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+
+      function load_paginate(){
+        
+        $(".paginate_button").addClass('btn btn-secondary');
+        $("#myTable_paginate").addClass('btn-group');
+        $("#myTable_paginate span").addClass('btn-group');
+      }
         $(document).ready( function () {
             $('#myTable').DataTable(
                 {
@@ -183,12 +194,17 @@
                     ],
 
                 "pageLength": 6,
-                "pagingType": "full_numbers"
-                },
+                "pagingType": "full_numbers",
+                drawCallback: function () {
+                  load_paginate();
+                  }
+                
+              }
+                
             );
             $('#myTable').removeClass( 'display' ).addClass('table table-striped table-bordered');  
+           
         } );
-
      var current_url = "{{current_url}}"
       var nav_item = document.getElementsByClassName("nav-item");
       var nav_link = document.getElementsByClassName("nav-link");
@@ -202,6 +218,8 @@
         }
       }
       window.onload = function() {
+        
+        load_paginate();
         setTimeout(() => {
           document.getElementById("loader").style.display = "none";
         }, 2000);

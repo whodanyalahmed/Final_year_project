@@ -173,19 +173,23 @@ def result(request):
 
 def list_results(request):
     # get values fromm session
-    daraz = request.session['daraz']
-    priceOye = request.session['priceOye']
-    pakmobizone = request.session['pakmobizone']
-    current_url = request.session['current_url']
+    try:
 
-    # daraz = json.dumps(daraz)
-    # priceOye = json.dumps(priceOye)
-    # pakmobizone = json.dumps(pakmobizone)
-    # daraz range
-    daraz_range = len(daraz['names'])
-    # priceOye range
-    priceOye_range = len(priceOye['names'])
-    # pakmobizone range
-    pakmobizone_range = len(pakmobizone['names'])
+        daraz = request.session['daraz']
+        priceOye = request.session['priceOye']
+        pakmobizone = request.session['pakmobizone']
+        current_url = request.session['current_url']
 
-    return render(request, 'list_results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "current_url": current_url, "daraz_range": daraz_range, "priceOye_range": priceOye_range, "pakmobizone_range": pakmobizone_range})
+        # daraz = json.dumps(daraz)
+        # priceOye = json.dumps(priceOye)
+        # pakmobizone = json.dumps(pakmobizone)
+        # daraz range
+        daraz_range = len(daraz['names'])
+        # priceOye range
+        priceOye_range = len(priceOye['names'])
+        # pakmobizone range
+        pakmobizone_range = len(pakmobizone['names'])
+
+        return render(request, 'list_results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "current_url": current_url, "daraz_range": daraz_range, "priceOye_range": priceOye_range, "pakmobizone_range": pakmobizone_range})
+    except:
+        return redirect('Dashboard')
