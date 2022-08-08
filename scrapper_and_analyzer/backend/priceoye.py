@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
-
+import os
 
 def Chrome(headless=False):
     # add fake user agent
@@ -16,6 +16,7 @@ def Chrome(headless=False):
     if headless:
         chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-gpu")
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--incognito")
     chrome_options.add_argument("--disable-dev-shm-usage")
@@ -24,7 +25,7 @@ def Chrome(headless=False):
     chrome_options.add_experimental_option(
         'excludeSwitches', ['enable-logging'])
     chrome_options.add_argument("--disable-popup-blocking")
-    driver = webdriver.Chrome(options=chrome_options, desired_capabilities=d)
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),options=chrome_options, desired_capabilities=d)
     driver.implicitly_wait(10)
     driver.maximize_window()
     return driver

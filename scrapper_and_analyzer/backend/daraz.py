@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
+import os
 
 
 def Chrome(headless=False):
@@ -10,21 +11,23 @@ def Chrome(headless=False):
     # return webdriver
     # support to get response status and headers
     d = webdriver.DesiredCapabilities.CHROME
-    d['loggingPrefs'] = {'performance': 'ALL'}    
-    d['acceptSslCerts']=True
+    d['loggingPrefs'] = {'performance': 'ALL'}
+    d['acceptSslCerts'] = True
 
     if headless:
         chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-gpu")
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--incognito")
     chrome_options.add_argument("--disable-dev-shm-usage")
     # chrome_options.add_argument("user-agent={}".format(
     #     fake_useragent.UserAgent().random))
-    # chrome_options.add_experimental_option(
-    #     'excludeSwitches', ['enable-logging'])
+    chrome_options.add_experimental_option(
+        'excludeSwitches', ['enable-logging'])
     chrome_options.add_argument("--disable-popup-blocking")
-    driver = webdriver.Chrome(options=chrome_options, desired_capabilities=d)
+    driver = webdriver.Chrome(executable_path=os.environ.get(
+        "CHROMEDRIVER_PATH"), options=chrome_options, desired_capabilities=d)
     driver.implicitly_wait(10)
     driver.maximize_window()
     return driver
@@ -118,6 +121,7 @@ def daraz_main(keyword, choice):
         return {"price": minprice, "name": minname, "src": image_list[index], "link": link_list[index]}
     else:
         return {"names": title_list, "prices": price_list, "images": image_list, "links": link_list}
+
 
 if __name__ == '__main__':
     d = daraz_main("Iphone 13")
