@@ -7,4 +7,5 @@ redis
 gunicorn
 beautifulsoup4
 requests
-selenium-webdriver
+webdriver-manager
+openpyxl
