@@ -1,3 +1,4 @@
+from django.template.defaulttags import register
 import json
 from numpy import Infinity
 from scrapper_and_analyzer import urls
@@ -9,18 +10,20 @@ from django.shortcuts import redirect, render
 import sys
 from django.views.decorators.cache import cache_control
 sys.path.append('../')
-from django.template.defaulttags import register
 
 # import daraz.py from python folder
 # Create your views here.
+
 
 @register.filter
 def index(sequence, position):
     return sequence[position]
 
+
 @register.filter
 def get_value(dictionary, key):
     return dictionary.get(key)
+
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def home(request):
@@ -151,19 +154,21 @@ def result(request):
                 return redirect('list_result')
     if request.method == 'GET':
         # get values fromm session
-        current_url = request.session['current_url']
-        daraz = request.session['daraz']
-        priceOye = request.session['priceOye']
-        pakmobizone = request.session['pakmobizone']
-        if current_url != 'list':
-            try:
+        try:
+
+            current_url = request.session['current_url']
+            daraz = request.session['daraz']
+            priceOye = request.session['priceOye']
+            pakmobizone = request.session['pakmobizone']
+            if current_url != 'list':
                 min_price_product, max_price_product = get_min_max_price(
                     daraz, priceOye, pakmobizone)
                 return render(request, 'results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "min_price_product": min_price_product, "max_price_product": max_price_product, "current_url": current_url})
-            except:
-                return redirect('Dashboard')
-        else:
-            return redirect('list_result')
+
+            else:
+                return redirect('list_result')
+        except:
+            return redirect('Dashboard')
 
 
 def list_results(request):

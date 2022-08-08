@@ -10,7 +10,8 @@ def Chrome(headless=False):
     # return webdriver
     # support to get response status and headers
     d = webdriver.DesiredCapabilities.CHROME
-    d['loggingPrefs'] = {'performance': 'ALL'}
+    d['loggingPrefs'] = {'performance': 'ALL'}    
+    d['acceptSslCerts']=True
 
     if headless:
         chrome_options.add_argument("--headless")

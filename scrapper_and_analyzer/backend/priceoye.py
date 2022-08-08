@@ -11,6 +11,7 @@ def Chrome(headless=False):
     # support to get response status and headers
     d = webdriver.DesiredCapabilities.CHROME
     d['loggingPrefs'] = {'performance': 'ALL'}
+    d['acceptSslCerts'] = True
 
     if headless:
         chrome_options.add_argument("--headless")
@@ -42,7 +43,7 @@ minname = ""
 mincount = 0
 
 
-def priceOye_main(keyword,choice):
+def priceOye_main(keyword, choice):
     global minprice
     global minname
     global mincount
@@ -100,9 +101,10 @@ def priceOye_main(keyword,choice):
 
     index = price_list.index(minprice)
     if(choice == "result"):
-        return {"price": minprice, "name": minname, "src": image_list[index],"link":link_list[index]}
+        return {"price": minprice, "name": minname, "src": image_list[index], "link": link_list[index]}
     else:
         return {"names": title_list, "prices": price_list, "images": image_list, "links": link_list}
+
 
 if __name__ == '__main__':
     d = priceOye_main("Iphone 11")
