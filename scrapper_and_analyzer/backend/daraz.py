@@ -98,6 +98,7 @@ def daraz_main(keyword, choice):
     # return minprice,minname and iamge_link with mincount as index
 
     driver.quit()
+    print(price_list)
     index = price_list.index(str(minprice))
     if choice == "result":
 
