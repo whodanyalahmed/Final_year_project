@@ -142,9 +142,23 @@ def result(request):
                 except Exception as e:
                     return render(request, 'results.html', context={'msg': "error", "text": "Can't find the product or may not exist!"})
             else:
-                daraz = daraz_main(keyword, "list")
-                priceOye = priceOye_main(keyword, "list")
-                pakmobizone = pakmobizone_main(keyword, "list")
+                try:
+
+                    priceOye = priceOye_main(keyword, "list")
+                except:
+                    priceOye = {"names": [], "prices": [],
+                                "images": [], "links": []}
+                try:
+                    daraz = daraz_main(keyword, "list")
+                except:
+                    daraz = {"names": [], "prices": [],
+                             "images": [], "links": []}
+                try:
+
+                    pakmobizone = pakmobizone_main(keyword, "list")
+                except:
+                    pakmobizone = {"names": [], "prices": [],
+                                   "images": [], "links": []}
 
                 request.session['daraz'] = daraz
                 request.session['priceOye'] = priceOye

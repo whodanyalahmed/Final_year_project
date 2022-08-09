@@ -126,7 +126,7 @@
                     
                     <tr>
                         <td>Daraz.pk</td>
-                        <td><a href="{{daraz.links | index:forloop.counter0 }}" target="_blank">{{daraz.names | index:forloop.counter0 }}</a></td>
+                        <td><a href="{{daraz.links | index:forloop.counter0 }}" target="_blank">{{daraz.names | index:forloop.counter0 }} <i class="fas fa-external-link-alt"></i></a></td>
                         <td>{{daraz.prices | index:forloop.counter0 }}</td>
                     </tr>
                     
@@ -137,7 +137,7 @@
                     
                     <tr>
                         <td>PriceOye</td>
-                        <td><a href="{{priceOye.links | index:forloop.counter0 }}" target="_blank">{{priceOye.names | index:forloop.counter0 }}</a></td>
+                        <td><a href="{{priceOye.links | index:forloop.counter0 }}" target="_blank">{{priceOye.names | index:forloop.counter0 }} <i class="fas fa-external-link-alt"></i></a></td>
                         <td>{{priceOye.prices | index:forloop.counter0 }}</td>
                     </tr>
                     
@@ -149,7 +149,7 @@
                     
                     <tr>
                         <td>pakmobizone</td>
-                        <td><a href="{{pakmobizone.links | index:forloop.counter0 }}" target="_blank">{{pakmobizone.names | index:forloop.counter0 }}</a></td>
+                        <td><a href="{{pakmobizone.links | index:forloop.counter0 }}" target="_blank">{{pakmobizone.names | index:forloop.counter0 }} <i class="fas fa-external-link-alt"></i></a></td>
                         <td>{{pakmobizone.prices | index:forloop.counter0 }}</td>
                     </tr>
                     
@@ -177,6 +177,8 @@
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://kit.fontawesome.com/c88fca5868.js" crossorigin="anonymous"></script>
     <script>
 
       function load_paginate(){

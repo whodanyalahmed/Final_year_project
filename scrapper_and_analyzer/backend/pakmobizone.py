@@ -93,6 +93,7 @@ def pakmobizone_main(keyword, choice):
     print("="*50)
     # find div with id root
     driver.quit()
+    print(price_list)
     index = price_list.index(minprice)
     if choice == "result":
         return {"price": minprice, "name": minname, "src": image_list[index], "link": link_list[index]}
