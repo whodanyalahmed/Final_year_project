@@ -139,6 +139,7 @@ def result(request):
                     request.session['priceOye'] = priceOye
                     request.session['pakmobizone'] = pakmobizone
                     request.session['current_url'] = current_url
+                    # if anyone is infinity
                     min_price_product, max_price_product = get_min_max_price(
                         daraz, priceOye, pakmobizone)
                     return render(request, 'results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "min_price_product": min_price_product, "max_price_product": max_price_product, "current_url": current_url})
