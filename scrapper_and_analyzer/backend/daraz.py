@@ -68,29 +68,31 @@ def daraz_main(keyword, choice):
     image_list = []
     link_list = []
     for i in range(len(title)):
+        link = product[i].find_element_by_xpath(
+            'div[1]/div/a').get_attribute('href')
+
+        int_price = price[i].text.replace('Rs. ', '')
+        int_price = int_price.replace(',', '')
+        int_price = int(int_price)
+
+        obj, created = Dataset.objects.get_or_create(
+            name=title[i].text, price=int_price, website='daraz', image=img_Src[i].get_attribute('src'), link=link)
         if keyword.lower() in title[i].text.lower():
 
             print("="*30)
-            link = product[i].find_element_by_xpath(
-                'div[1]/div/a').get_attribute('href')
             print("link: "+str(link))
             link_list.append(link)
             print(title[i].text)
             # check if same price is found then skip
             title_list.append(title[i].text)
             print(price[i].text)
-            int_price = price[i].text.replace('Rs. ', '')
-            int_price = int_price.replace(',', '')
-            int_price = int(int_price)
-
             price_list.append(int_price)
             print(img_Src[i].get_attribute('src'))
             image_list.append(img_Src[i].get_attribute('src'))
-            Dataset.objects.get_or_create(
-                name=title[i].text, price=int_price, website='daraz', image=img_Src[i].get_attribute('src'), link=link)
+
+            print("obj and created: ", obj, created)
 
     # print(product.text)
-    print(price_list)
     dt = dict(zip(title_list, price_list))
     print(dt)
 

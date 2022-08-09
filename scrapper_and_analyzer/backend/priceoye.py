@@ -49,32 +49,37 @@ def priceOye_main(keyword, choice):
     # print(divs)
     # print(len(divs))
     for div in divs:
-
+        details = div.find_element_by_xpath(".//div[@class='detail-box']")
+        name = details.find_element_by_class_name("p3")
+        
         img = div.find_element_by_xpath(
             './/div[@class="image-box desktop"]/amp-img')
         link = div.find_element_by_xpath(
             'a').get_attribute('href')
         # get src attribute of amp-img
         src = img.get_attribute("src")
-        image_list.append(src)
+      
         # print(src)
-        details = div.find_element_by_xpath(".//div[@class='detail-box']")
-        name = details.find_element_by_class_name("p3")
-        title_list.append(name.text)
-        print("link: "+link)
-        link_list.append(link)
+       
         price = details.find_element_by_xpath(".//div[@class='price-box']")
         price = str(price.text)
         price = price.replace("Rs. ", "")
         price = price.replace(",", "")
         price = int(price)
-        price_list.append(price)
+      
         obj, created = Dataset.objects.get_or_create(
             name=name.text, price=price, website="priceOye", link=link, image=src)
-        print("obj and created: ", obj, created)
-        print("name: ", name.text)
-        print("price: ", price)
-        print("image: ", src)
+        if(keyword.lower() in name.lower()):
+            title_list.append(name.text)
+            image_list.append(src)
+            link_list.append(link)
+            price_list.append(price)
+            
+            print("link: "+link)
+            print("obj and created: ", obj, created)
+            print("name: ", name.text)
+            print("price: ", price)
+            print("image: ", src)
     dt = dict(zip(title_list, price_list))
 
     for k, v in dt.items():

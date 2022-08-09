@@ -71,8 +71,9 @@ def pakmobizone_main(keyword, choice):
         image = product.find_element_by_xpath(
             "a/img").get_attribute('src')
         
-        Dataset.objects.get_or_create(
+        obj,created = Dataset.objects.get_or_create(
             name=name.text, price=price,website="pakmobizone", link=link, image=image)
+        print("obj and created: ", obj, created)
         if(keyword.lower() in name.text.lower()):
             price_list.append(price)
             title_list.append(name.text)
@@ -97,7 +98,6 @@ def pakmobizone_main(keyword, choice):
     print("="*50)
     # find div with id root
     driver.quit()
-    print(price_list)
     index = price_list.index(minprice)
     if choice == "result":
         return {"price": minprice, "name": minname, "src": image_list[index], "link": link_list[index]}
