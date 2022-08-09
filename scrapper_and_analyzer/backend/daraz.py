@@ -77,6 +77,7 @@ def daraz_main(keyword, choice):
 
         obj, created = Dataset.objects.get_or_create(
             name=title[i].text, price=int_price, website='daraz', image=img_Src[i].get_attribute('src'), link=link)
+        print("obj and created: ", obj, created)
         if keyword.lower() in title[i].text.lower():
 
             print("="*30)
@@ -90,7 +91,7 @@ def daraz_main(keyword, choice):
             print(img_Src[i].get_attribute('src'))
             image_list.append(img_Src[i].get_attribute('src'))
 
-            print("obj and created: ", obj, created)
+
 
     # print(product.text)
     dt = dict(zip(title_list, price_list))
