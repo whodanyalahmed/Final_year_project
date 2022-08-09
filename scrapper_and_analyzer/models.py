@@ -18,6 +18,7 @@ class Dataset(models.Model):
     website = models.CharField(max_length=80, default=None)
     image = models.CharField(max_length=80, default=None)
     link = models.CharField(max_length=80, default=None)
+    fetched_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name + ' ' + str(self.price)
