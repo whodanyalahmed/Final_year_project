@@ -1,5 +1,8 @@
 from selenium import webdriver
 import os
+from scrapper_and_analyzer.models import Dataset
+chrome_bin = os.environ.get("GOOGLE_CHROME_BIN")
+chromedriver_path = os.environ.get("CHROMEDRIVER_PATH")
 
 
 def Chrome(headless=False):
@@ -73,13 +76,18 @@ def daraz_main(keyword, choice):
             print("link: "+str(link))
             link_list.append(link)
             print(title[i].text)
+            # check if same price is found then skip
             title_list.append(title[i].text)
             print(price[i].text)
             int_price = price[i].text.replace('Rs. ', '')
             int_price = int_price.replace(',', '')
+            int_price = int(int_price)
+
             price_list.append(int_price)
             print(img_Src[i].get_attribute('src'))
             image_list.append(img_Src[i].get_attribute('src'))
+            Dataset.objects.get_or_create(
+                name=title[i].text, price=int_price, website='daraz', image=img_Src[i].get_attribute('src'), link=link)
 
     # print(product.text)
     print(price_list)
@@ -87,7 +95,6 @@ def daraz_main(keyword, choice):
     print(dt)
 
     for k, v in dt.items():
-        v = int(v.replace(",", ""))
 
         if v < minprice:
             minprice = v
@@ -99,7 +106,7 @@ def daraz_main(keyword, choice):
 
     driver.quit()
     print(price_list)
-    index = price_list.index(str(minprice))
+    index = price_list.index(minprice)
     if choice == "result":
 
         return {"price": minprice, "name": minname, "src": image_list[index], "link": link_list[index]}

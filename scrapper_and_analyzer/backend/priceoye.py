@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 import os
+from scrapper_and_analyzer.models import Dataset
 
 
 def Chrome(headless=False):
@@ -68,7 +69,9 @@ def priceOye_main(keyword, choice):
         price = price.replace(",", "")
         price = int(price)
         price_list.append(price)
-
+        obj, created = Dataset.objects.get_or_create(
+            name=name.text, price=price, website="priceOye", link=link, image=src)
+        print("obj and created: ", obj, created)
         print("name: ", name.text)
         print("price: ", price)
         print("image: ", src)

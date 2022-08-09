@@ -102,7 +102,8 @@ def result(request):
                     try:
 
                         priceOye = priceOye_main(keyword, "result")
-                    except:
+                    except Exception as e:
+                        print(e)
                         priceOye = {
                             "name": "No Product found",
                             "price": Infinity,
@@ -110,7 +111,8 @@ def result(request):
                         }
                     try:
                         daraz = daraz_main(keyword, "result")
-                    except:
+                    except Exception as e:
+                        print(e)
                         daraz = {
                             "name": "No Product found",
                             "price": Infinity,
@@ -119,7 +121,8 @@ def result(request):
                     try:
 
                         pakmobizone = pakmobizone_main(keyword, "result")
-                    except:
+                    except Exception as e:
+                        print(e)
                         pakmobizone = {
                             "name": "No Product found",
                             "price": Infinity,
