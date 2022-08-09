@@ -70,7 +70,8 @@ def priceOye_main(keyword, choice):
         obj, created = Dataset.objects.get_or_create(
             name=name.text, price=price, website="priceOye", link=link, image=src)
         print("obj and created: ", obj, created)
-        if(keyword.lower() in name.lower()):
+
+        if(keyword.lower() in name.text.lower()):
             title_list.append(name.text)
             image_list.append(src)
             link_list.append(link)
