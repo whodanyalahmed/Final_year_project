@@ -29,16 +29,14 @@ def minpr(d):
         return 1
 
 
-minprice = minpr(0)
-minname = ""
-mincount = 0
 
 
 def pakmobizone_main(keyword, choice):
 
-    global minprice
-    global minname
-    global mincount
+   
+    minprice = minpr(0)
+    minname = ""
+    mincount = 0
 
     price_list = []
     title_list = []

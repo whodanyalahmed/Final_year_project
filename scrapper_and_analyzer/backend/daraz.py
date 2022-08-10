@@ -26,15 +26,13 @@ def minpr(d):
         return 1
 
 
-minprice = minpr(0)
-minname = ""
-mincount = 0
 
 
 def daraz_main(keyword, choice):
-    global minprice
-    global minname
-    global mincount
+    minprice = minpr(0)
+    minname = ""
+    mincount = 0
+
     keyword_url = keyword.replace(' ', '+')
     driver = Chrome(True)
     url = 'https://www.daraz.pk/smartphones/?from=input&q=' + keyword_url

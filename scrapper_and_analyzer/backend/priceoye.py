@@ -1,7 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
-import os,re
+import os
+import re
 from scrapper_and_analyzer.models import Dataset
 
 
@@ -26,15 +27,12 @@ def minpr(d):
         return 1
 
 
-minprice = minpr(0)
-minname = ""
-mincount = 0
-
-
 def priceOye_main(keyword, choice):
-    global minprice
-    global minname
-    global mincount
+
+    minprice = minpr(0)
+    minname = ""
+    mincount = 0
+
     price_list = []
     title_list = []
     image_list = []
