@@ -1,5 +1,5 @@
 from selenium import webdriver
-import os
+import os,re
 from scrapper_and_analyzer.models import Dataset
 chrome_bin = os.environ.get("GOOGLE_CHROME_BIN")
 chromedriver_path = os.environ.get("CHROMEDRIVER_PATH")
@@ -78,7 +78,9 @@ def daraz_main(keyword, choice):
         obj, created = Dataset.objects.get_or_create(
             name=title[i].text, price=int_price, website='daraz', image=img_Src[i].get_attribute('src'), link=link)
         print("obj and created: ", obj, created)
-        if keyword.lower() in title[i].text.lower():
+        fname = title[i].text.lower()
+        keyword_name = keyword.lower().split(' ')
+        if re.search('|'.join(keyword_name), fname):
 
             print("="*30)
             print("link: "+str(link))
