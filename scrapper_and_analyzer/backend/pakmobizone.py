@@ -2,9 +2,11 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
-import os,re
+import os
+import re
 
 from scrapper_and_analyzer.models import Dataset
+
 
 def Chrome(headless=False):
     # add fake user agent
@@ -18,7 +20,6 @@ def Chrome(headless=False):
         "CHROMEDRIVER_PATH"), options=chrome_options)
     driver.implicitly_wait(10)
     return driver
-
 
 
 def minpr(d):
@@ -70,13 +71,15 @@ def pakmobizone_main(keyword, choice):
             'a').get_attribute('href')
         image = product.find_element_by_xpath(
             "a/img").get_attribute('src')
-        
-        obj,created = Dataset.objects.get_or_create(
-            name=name.text, price=price,website="pakmobizone", link=link, image=image)
+
+        obj, created = Dataset.objects.get_or_create(
+            name=name.text, price=price, website="pakmobizone", link=link, image=image)
         print("obj and created: ", obj, created)
         fname = name.text.lower()
         keyword_name = keyword.lower().split(' ')
-        if re.search('|'.join(keyword_name), fname):
+        # get keyword_name except first one
+        keyword_name = keyword_name[1:]
+        if keyword.lower() in fname or re.search('|'.join(keyword_name), fname):
             price_list.append(price)
             title_list.append(name.text)
             image_list.append(image)

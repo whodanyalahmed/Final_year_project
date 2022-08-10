@@ -80,7 +80,9 @@ def daraz_main(keyword, choice):
         print("obj and created: ", obj, created)
         fname = title[i].text.lower()
         keyword_name = keyword.lower().split(' ')
-        if re.search('|'.join(keyword_name), fname):
+        # get keyword_name except first one
+        keyword_name = keyword_name[1:]
+        if keyword.lower() in title[i].text or re.search('|'.join(keyword_name), fname):
 
             print("="*30)
             print("link: "+str(link))

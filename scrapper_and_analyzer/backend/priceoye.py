@@ -72,7 +72,9 @@ def priceOye_main(keyword, choice):
         print("obj and created: ", obj, created)
         fname = name.text.lower()
         keyword_name = keyword.lower().split(' ')
-        if re.search('|'.join(keyword_name), fname):
+        # get keyword_name except first one
+        keyword_name = keyword_name[1:]
+        if keyword.lower() in fname or re.search('|'.join(keyword_name), fname):
             title_list.append(name.text)
             image_list.append(src)
             link_list.append(link)
