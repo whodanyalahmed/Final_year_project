@@ -1,5 +1,6 @@
 from selenium import webdriver
-import os,re
+import os
+import re
 from scrapper_and_analyzer.models import Dataset
 chrome_bin = os.environ.get("GOOGLE_CHROME_BIN")
 chromedriver_path = os.environ.get("CHROMEDRIVER_PATH")
@@ -24,8 +25,6 @@ def minpr(d):
         return 100000000000000000000
     else:
         return 1
-
-
 
 
 def daraz_main(keyword, choice):
@@ -56,8 +55,11 @@ def daraz_main(keyword, choice):
         '//div[@class="title--wFj93"]')
     price = product_div.find_elements_by_xpath(
         '//div[@class="price--NVB62"]')
+    # img_Src = product_div.find_elements_by_xpath(
+    #     '//img[@class="image--WOyuZ "]')
+    # get img with class image--WOyuZ and also have alt attribute
     img_Src = product_div.find_elements_by_xpath(
-        '//img[@class="image--WOyuZ "]')
+        '//img[@class="image--WOyuZ " and @alt]')
     print(len(title))
     print(len(price))
     print(len(img_Src))
@@ -79,8 +81,8 @@ def daraz_main(keyword, choice):
         fname = title[i].text.lower()
         keyword_name = keyword.lower().split(' ')
         # get keyword_name except first one
-        keyword_name = keyword_name[1:]
-        if keyword.lower() in title[i].text or re.search('|'.join(keyword_name), fname):
+        # keyword_name = keyword_name[1:]
+        if keyword.lower() in fname:
 
             print("="*30)
             print("link: "+str(link))
@@ -92,8 +94,6 @@ def daraz_main(keyword, choice):
             price_list.append(int_price)
             print(img_Src[i].get_attribute('src'))
             image_list.append(img_Src[i].get_attribute('src'))
-
-
 
     # print(product.text)
     dt = dict(zip(title_list, price_list))
