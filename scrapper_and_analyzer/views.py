@@ -69,22 +69,35 @@ def get_predicted_price(request):
         y = list(y)
         # transpose y
         y = np.transpose(y)
-        model = LinearRegression()
-        model.fit(x, y)
-        r_sq = model.score(x.astype('float64'), y)
-        print(f"coefficient of determination: {r_sq}")
-        print(f"intercept: {model.intercept_}")
-        print(f"slope: {model.coef_}")
+        X_train, X_test, y_train, y_test = train_test_split(
+            x, y, test_size=0.2)
         # reshape new_date to 2d array
         new_date = new_date.values.reshape(-1, 1)
         new_date = [[float(new_date)]]
         print(new_date)
-        y_pred = model.predict(new_date)
-        print(f"predicted response:\n{y_pred}")
-        print(f"actual response:\n{y}")
+        # model = LinearRegression()
+        # model.fit(x, y)
+        # r_sq = model.score(x.astype('float64'), y)
+        # print(f"coefficient of determination: {r_sq}")
+        # print(f"intercept: {model.intercept_}")
+        # print(f"slope: {model.coef_}")
+        # # y_pred = model.predict(new_date)
+        # y_pred = model.predict(new_date)
+        # print(f"predicted response:\n{y_pred}")
+        # print(f"actual response:\n{y}")
+        # y_pred = json.dumps(y_pred, cls=NumpyEncoder)
+        clf = LinearRegression(
+            copy_X=True, fit_intercept=True, n_jobs=None, normalize=False)
+        clf.fit(X_train, y_train)
+        confidence = clf.score(X_test.astype('float64'), y_test)
+        print(confidence)
+        forecast_set = clf.predict(X_test.astype('float64'))
+        print("Actual: %s" % y_test)
+        print("Predicted: %s" % forecast_set)
+        forecast_set = forecast_set.tolist()
+        y_pred = clf.predict(new_date)
         y_pred = json.dumps(y_pred, cls=NumpyEncoder)
-
-        return JsonResponse(y_pred, safe=False)
+        return JsonResponse([forecast_set, y_pred], safe=False)
 
 
 @ cache_control(no_cache=True, must_revalidate=True, no_store=True)
