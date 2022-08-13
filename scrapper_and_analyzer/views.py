@@ -22,6 +22,7 @@ from django.views.decorators.cache import cache_control
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 
 
 sys.path.append('../')
@@ -88,16 +89,27 @@ def get_predicted_price(request):
         # y_pred = json.dumps(y_pred, cls=NumpyEncoder)
         clf = LinearRegression(
             copy_X=True, fit_intercept=True, n_jobs=None, normalize=False)
+        rf = RandomForestRegressor(n_estimators=1000, random_state=42)
+        rf.fit(X_train, y_train)
         clf.fit(X_train, y_train)
         confidence = clf.score(X_test.astype('float64'), y_test)
         print(confidence)
         forecast_set = clf.predict(X_test.astype('float64'))
+        rf_set = rf.predict(X_test.astype('float64'))
         print("Actual: %s" % y_test)
         print("Predicted: %s" % forecast_set)
+        print("Random Forest Predicted: %s" % rf_set)
+
         forecast_set = forecast_set.tolist()
         y_pred = clf.predict(new_date)
+        rf_y_pre = rf.predict(new_date)
+        y_pred = abs(y_pred)
+        rf_y_pre = abs(rf_y_pre)
         y_pred = json.dumps(y_pred, cls=NumpyEncoder)
-        return JsonResponse([forecast_set, y_pred], safe=False)
+        rf_y_pre = json.dumps(rf_y_pre, cls=NumpyEncoder)
+        # convert y_pred to absolute value
+
+        return JsonResponse([forecast_set, y_pred, rf_y_pre], safe=False)
 
 
 @ cache_control(no_cache=True, must_revalidate=True, no_store=True)
