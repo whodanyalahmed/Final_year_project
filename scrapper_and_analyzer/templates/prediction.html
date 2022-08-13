@@ -1,0 +1,198 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Product Scraper & Analyzer | {{current_url}}</title>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %} ">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %} ">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %} ">
+    <link rel="manifest" href="{% static 'images/site.webmanifest' %} ">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,700"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'css/myStyle.css' %}" />
+  </head>
+
+  <body>
+    <div id="loader">
+      <div class="grid place-items-center h-screen">
+        <div class="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-indigo-500 hover:bg-indigo-400 transition ease-in-out duration-150 cursor-not-allowed" disabled="">
+          <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Processing...
+        </div>
+      </div>
+    </div>
+    <section class="ftco-section">
+      <!-- START nav -->
+      <nav
+        class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light"
+        id="ftco-navbar"
+        >
+        <div class="container nav_container" style="
+        margin: 0px auto;
+    ">
+          <a class="navbar-brand" href="{% url 'Dashboard' %}" style="margin:0px 34px 15px -65px;"><img src="{% static 'images/FYP logo-01.svg' %}" style="height: 50px;margin-top: 10px;margin-left:70px;" ></a>
+          <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#ftco-nav"
+          aria-controls="ftco-nav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+          >
+          <span class="fa fa-bars"></span> Menu
+        </button>
+        <div class="collapse navbar-collapse" id="ftco-nav">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a href="/" class="nav-link">Dashboard</a>
+              </li>
+              <li class="nav-item"><a href="{% url 'minimum' %}" class="nav-link">Minimum</a></li>
+              <li class="nav-item"><a href="{% url 'maximum' %}" class="nav-link">Maximum</a></li>
+              <li class="nav-item"><a href="{% url 'list' %}" class="nav-link">List</a></li>
+              <li class="nav-item active">
+                <a href="{% url 'prediction' %}" class="nav-link ">Prediction</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <!-- END nav -->
+    </section>
+    <div class="container mt-5">
+        <div class="row ml-1">
+            <div class="text-lg font-medium ml-4 verticalLine" style="height: 25px;">
+                    <h1 class="text-white uppercase text-black-50 ml-2">
+                        {{current_url}}
+                    </h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="container d3">
+        
+      <div class="col justify-content-center">
+        <div class="heading">
+          <h2>Enter the Desired <b>Date</b> You Wanna get <span class="text-red-500 font-weight-bolder">Prediction</span>...</h2>
+        </div>
+        <div class="form">
+          <form
+            action="{% url 'predicted_price' %}"
+            method="POST"
+            class="searchform order-lg-last"
+            id="searchform"
+          >
+            <div class="form-group d-flex">
+              {% csrf_token %}
+              <input
+                type="text"
+                name="keyword"
+                class="m form-control pl-3"
+                placeholder="Search your product"
+                id="values"
+                required
+              />
+              <input type="date" name="date" class="form-control search" required>
+              <input type="hidden" name="url" value="{{current_url}}">
+              <button type="submit" class="form-control search" id="searchBut">
+                <span class="fa fa-search"></span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="container pb-5">
+      <div class="row justify-content-between mb-5">
+        <div class="col">
+          <a class="navbar-brand" href="{% url 'Dashboard' %}"
+            >Product Scraper & Analyzer<span>Crawl your desired phone</span></a
+          >
+        </div>
+        <div class="col d-flex justify-content-end">
+          <div class="social-media">
+            <p class="mb-0 d-flex">
+              <a
+                href="#"
+                class="d-flex align-items-center justify-content-center"
+                ><span class="fa fa-facebook"
+                  ><i class="sr-only">Facebook</i></span
+                ></a
+              >
+              <a
+                href="#"
+                class="d-flex align-items-center justify-content-center"
+                ><span class="fa fa-twitter"
+                  ><i class="sr-only">Twitter</i></span
+                ></a
+              >
+              <a
+                href="#"
+                class="d-flex align-items-center justify-content-center"
+                ><span class="fa fa-instagram"
+                  ><i class="sr-only">Instagram</i></span
+                ></a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script>
+
+    
+{% comment %} update nav-item class with active class when clicked
+ {% endcomment %}
+    $(".nav-item").click(function(){
+      $(".nav-item").removeClass("active");
+      $(this).addClass("active");
+    });
+
+
+    
+      $('#searchform').on('submit', function(e){
+        
+        setTimeout(function(){
+          $('#loader').fadeIn();
+          $("#searchBut").attr("disabled", true);
+        }, 500);
+
+      });
+      window.onload = function() {
+        setTimeout(function() {
+          
+          $("#loader").fadeOut("slow");
+        }, 1000);
+      };
+    </script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+  </body>
+</html>

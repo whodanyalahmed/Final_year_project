@@ -36,44 +36,55 @@ class NumpyEncoder(json.JSONEncoder):
 
 
 def get_predicted_price(request):
-    keyword = "iphone 11"
-    # new_date to 2023-12-31
-    new_date = datetime(2022, 12, 31)
-    # reshape new_Date to 2d array
-    new_date = np.reshape(new_date, (1, -1))
-    # add to df
-    new_date = pd.DataFrame(new_date)
-    # convert to float
-    print(new_date)
-    # convert to date
+    if request.method == 'POST':
+        keyword = request.POST.get('keyword')
+        # new_date to 2023-12-31
+        date = request.POST.get('date')
+        # create datetime object
+        new_date = datetime.strptime(date, '%Y-%m-%d')
+        # reshape new_Date to 2d array
+        new_date = np.reshape(new_date, (1, -1))
+        # add to df
+        new_date = pd.DataFrame(new_date)
+        # convert to float
+        print(new_date)
+        # convert to date
 
-    # select all the data with the keyword
-    data = Dataset.objects.filter(name__contains=keyword)
-    # searialize the data
-    data = list(data.values())
-    # # get the dataframe
-    df = pd.DataFrame(data)
-    y = df['price'].astype("float64")
-    x = df['fetched_date'].astype("datetime64[ns]")
-    # reshape the data
-    x = x.values.reshape(-1, 1)
-    y = list(y)
-    # transpose y
-    y = np.transpose(y)
-    model = LinearRegression()
-    model.fit(x, y)
-    print(f"intercept: {model.intercept_}")
-    print(f"slope: {model.coef_}")
-    # reshape new_date to 2d array
-    new_date = new_date.values.reshape(-1, 1)
-    new_date = [[float(new_date)]]
-    print(new_date)
-    y_pred = model.predict(new_date)
-    print(f"predicted response:\n{y_pred}")
-    print(f"actual response:\n{y}")
-    y_pred = json.dumps(y_pred, cls=NumpyEncoder)
+        # select all the data with the keyword
+        data = Dataset.objects.filter(name__contains=keyword)
+        # searialize the data
+        data = list(data.values())
+        # # get the dataframe
+        df = pd.DataFrame(data)
+        print(df)
+        y = df['price'].astype("float64")
+        x = df['fetched_date'].dt.date
+        # convert x to .astype("datetime64[ns]")
+        x = x.astype("datetime64[ns]")
+        print(x)
+        # get date column
+        # x = df['fetched_date'].astype("datetime64[ns]")
+        # reshape the data
+        x = x.values.reshape(-1, 1)
+        y = list(y)
+        # transpose y
+        y = np.transpose(y)
+        model = LinearRegression()
+        model.fit(x, y)
+        r_sq = model.score(x.astype('float64'), y)
+        print(f"coefficient of determination: {r_sq}")
+        print(f"intercept: {model.intercept_}")
+        print(f"slope: {model.coef_}")
+        # reshape new_date to 2d array
+        new_date = new_date.values.reshape(-1, 1)
+        new_date = [[float(new_date)]]
+        print(new_date)
+        y_pred = model.predict(new_date)
+        print(f"predicted response:\n{y_pred}")
+        print(f"actual response:\n{y}")
+        y_pred = json.dumps(y_pred, cls=NumpyEncoder)
 
-    return JsonResponse(y_pred, safe=False)
+        return JsonResponse(y_pred, safe=False)
 
 
 @ cache_control(no_cache=True, must_revalidate=True, no_store=True)
