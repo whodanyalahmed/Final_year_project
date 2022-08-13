@@ -1,3 +1,13 @@
+from datetime import datetime
+from xmlrpc.client import DateTime
+from django.http import JsonResponse
+from scrapper_and_analyzer.models import Dataset
+import os
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+import numpy as np
+import pandas as pd
 from django.template.defaulttags import register
 import json
 from numpy import Infinity
@@ -9,48 +19,89 @@ from django.urls import resolve
 from django.shortcuts import redirect, render
 import sys
 from django.views.decorators.cache import cache_control
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+
+
 sys.path.append('../')
-
-# import daraz.py from python folder
-# Create your views here.
+# from ..models import Dataset
 
 
-@register.filter
-def index(sequence, position):
-    return sequence[position]
+class NumpyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return json.JSONEncoder.default(self, obj)
 
 
-@register.filter
-def get_value(dictionary, key):
-    return dictionary.get(key)
+def get_predicted_price(request):
+    keyword = "iphone 11"
+    # new_date to 2023-12-31
+    new_date = datetime(2022, 12, 31)
+    # reshape new_Date to 2d array
+    new_date = np.reshape(new_date, (1, -1))
+    # add to df
+    new_date = pd.DataFrame(new_date)
+    # convert to float
+    print(new_date)
+    # convert to date
+
+    # select all the data with the keyword
+    data = Dataset.objects.filter(name__contains=keyword)
+    # searialize the data
+    data = list(data.values())
+    # # get the dataframe
+    df = pd.DataFrame(data)
+    y = df['price'].astype("float64")
+    x = df['fetched_date'].astype("datetime64[ns]")
+    # reshape the data
+    x = x.values.reshape(-1, 1)
+    y = list(y)
+    # transpose y
+    y = np.transpose(y)
+    model = LinearRegression()
+    model.fit(x, y)
+    print(f"intercept: {model.intercept_}")
+    print(f"slope: {model.coef_}")
+    # reshape new_date to 2d array
+    new_date = new_date.values.reshape(-1, 1)
+    new_date = [[float(new_date)]]
+    print(new_date)
+    y_pred = model.predict(new_date)
+    print(f"predicted response:\n{y_pred}")
+    print(f"actual response:\n{y}")
+    y_pred = json.dumps(y_pred, cls=NumpyEncoder)
+
+    return JsonResponse(y_pred, safe=False)
 
 
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@ cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def home(request):
 
     current_url = resolve(request.path_info).url_name
     return render(request, 'index.html', context={'current_url': current_url})
 
 
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@ cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def Minimum(request):
     current_url = resolve(request.path_info).url_name
     return render(request, 'minimum.html', context={'current_url': current_url})
 
 
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@ cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def maximum(request):
     current_url = resolve(request.path_info).url_name
     return render(request, 'maximum.html', context={'current_url': current_url})
 
 
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@ cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def _list(request):
     current_url = resolve(request.path_info).url_name
     return render(request, 'list.html', context={'current_url': current_url})
 
 
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@ cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def prediction(request):
     current_url = resolve(request.path_info).url_name
     return render(request, 'prediction.html', context={'current_url': current_url})

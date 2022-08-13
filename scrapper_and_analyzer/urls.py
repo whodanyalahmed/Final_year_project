@@ -10,6 +10,7 @@ urlpatterns = [
     path('list', views._list, name="list"),
     path("list_results", views.list_results, name="list_result"),
     path('prediction', views.prediction, name="prediction"),
+    path('predicted_price', views.get_predicted_price, name="predicted_price"),
 
     # path('app/', index, name='home'),
 ]

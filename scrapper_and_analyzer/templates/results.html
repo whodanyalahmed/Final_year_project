@@ -175,40 +175,43 @@
     </div>
 
     {% elif current_url == "minimum" %}
-    <div class="display" id="dis" style="display:block;">
-      <div class="d-flex justify-content-center h">
-        <div class="card" style="width: 18rem">
-          <div class="card-header">
-            <h5 class="text-center">Minimum Price</h5>
-          </div>
-          <img class="card-img-top" src="{{min_price_product.src}}" id="img" alt="min image" />
-          <div class="card-body">
-            <h5 class="card-title" id="title">{{min_price_product.name}}</h5>
-            <p class="card-text" id="descmin"></p>
-            <p class="text-green-500 font-weight-bold">Rs. {{min_price_product.price |intcomma}} /=</p>
-            <a href="{{min_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
+    <div class="container">
+      <div class="row flex justify-center" >
+        <div class="col-lg-4 col-sm-12 mx-xl-5 my-sm-5 my-5">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="text-center">Minimum Price</h5>
+            </div>
+            <img class="card-img-top" src="{{min_price_product.src}}" id="img" alt="min image" />
+            <div class="card-body">
+              <h5 class="card-title" id="title">{{min_price_product.name}}</h5>
+              <p class="card-text" id="descmin"></p>
+              <p class="text-green-500 font-weight-bold">Rs. {{min_price_product.price |intcomma}} /=</p>
+              <a href="{{min_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
     {% elif current_url == "maximum" %}
-    <div class="display" id="dis" style="display:block;">
-      <div class="d-flex justify-content-center h">
-        <div class="card" style="width: 18rem">
-          <div class="card-header">
-            <h5 class="text-center">Maximum Price</h5>
-          </div>
-          <img class="card-img-top" src="{{max_price_product.src}}" id="img" alt="min image" />
-          <div class="card-body">
-            <h5 class="card-title" id="title">{{max_price_product.name}}</h5>
-            <p class="card-text" id="descmin"></p>
-            <p class="text-red-500 font-weight-bold">Rs. {{max_price_product.price |intcomma}} /=</p>
-            <a href="{{max_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
+    <div class="container">
+      <div class="row flex justify-center" >
+        <div class="col-lg-4 col-sm-12 mx-xl-5 my-sm-5 my-5">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="text-center">Maximum Price</h5>
+            </div>
+            <img class="card-img-top" src="{{max_price_product.src}}" id="img1" alt="max image" />
+            <div class="card-body">
+              <h5 class="card-title" id="title1">{{max_price_product.name}}</h5>
+              <p class="card-text" id="descmax"></p>
+              <p class="text-red-600 font-weight-bold">Rs. {{max_price_product.price |intcomma }} /=</p>
+              <a href="{{max_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
     {% endif %}
     
     <div class="container">
