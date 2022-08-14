@@ -246,6 +246,7 @@ def result(request):
                     # convert to list
                     data = json.loads(data)
                     data = data[0]
+                    data = int(data)
 
                     # save values in session
                     request.session['data'] = data
@@ -296,7 +297,6 @@ def result(request):
             elif current_url == "prediction":
                 data = request.session['data']
                 keyword = request.session['keyword']
-
 
                 return render(request, 'results.html', context={'msg': "success", 'data': data, 'current_url': current_url, 'keyword': keyword})
             else:
