@@ -10,3 +10,4 @@ requests
 webdriver-manager
 openpyxl
 whitenoise
+scikit-learn
