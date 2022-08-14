@@ -3,6 +3,10 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 import os
+import re
+
+from scrapper_and_analyzer.models import Dataset
+
 
 def Chrome(headless=False):
     # add fake user agent
@@ -18,7 +22,6 @@ def Chrome(headless=False):
     return driver
 
 
-
 def minpr(d):
     if d == 0:
         return 100000000000000000000
@@ -26,16 +29,14 @@ def minpr(d):
         return 1
 
 
-minprice = minpr(0)
-minname = ""
-mincount = 0
 
 
 def pakmobizone_main(keyword, choice):
 
-    global minprice
-    global minname
-    global mincount
+   
+    minprice = minpr(0)
+    minname = ""
+    mincount = 0
 
     price_list = []
     title_list = []
@@ -69,7 +70,14 @@ def pakmobizone_main(keyword, choice):
         image = product.find_element_by_xpath(
             "a/img").get_attribute('src')
 
-        if(keyword.lower() in name.text.lower()):
+        obj, created = Dataset.objects.get_or_create(
+            name=name.text, price=price, website="pakmobizone", link=link, image=image)
+        print("obj and created: ", obj, created)
+        fname = name.text.lower()
+        keyword_name = keyword.lower().split(' ')
+        # get keyword_name except first one
+        keyword_name = keyword_name[1:]
+        if keyword.lower() in fname or re.search('|'.join(keyword_name), fname):
             price_list.append(price)
             title_list.append(name.text)
             image_list.append(image)

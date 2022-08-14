@@ -5,6 +5,10 @@
 <html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %} ">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %} ">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %} ">
+    <link rel="manifest" href="{% static 'images/site.webmanifest' %} ">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product Scraper & Analyzer | {{current_url}}</title>
@@ -33,13 +37,12 @@
       <nav
         class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light"
         id="ftco-navbar"
-      > <div class="container" style="
+      > <div class="container nav_container" style="
       margin: 0px auto;
-      height: 65px;
   ">
         <a class="navbar-brand" href="{% url 'Dashboard' %}" style="margin:0px 34px 15px -65px;"><img src="{% static 'images/FYP logo-01.svg' %}" style="height: 50px;margin-top: 10px;margin-left:70px;" ></a>
       
-        <div class="container">
+
           
           <button
             class="navbar-toggler"
@@ -64,7 +67,6 @@
                 <a href="{% url 'prediction' %}" class="nav-link">Prediction</a>
               </li>
             </ul>
-          </div>
         </div>
       </nav>
       <!-- END nav -->
@@ -124,7 +126,7 @@
                     
                     <tr>
                         <td>Daraz.pk</td>
-                        <td><a href="{{daraz.links | index:forloop.counter0 }}" target="_blank">{{daraz.names | index:forloop.counter0 }}</a></td>
+                        <td><a href="{{daraz.links | index:forloop.counter0 }}" target="_blank">{{daraz.names | index:forloop.counter0 }} <i class="fas fa-external-link-alt"></i></a></td>
                         <td>{{daraz.prices | index:forloop.counter0 }}</td>
                     </tr>
                     
@@ -135,7 +137,7 @@
                     
                     <tr>
                         <td>PriceOye</td>
-                        <td><a href="{{priceOye.links | index:forloop.counter0 }}" target="_blank">{{priceOye.names | index:forloop.counter0 }}</a></td>
+                        <td><a href="{{priceOye.links | index:forloop.counter0 }}" target="_blank">{{priceOye.names | index:forloop.counter0 }} <i class="fas fa-external-link-alt"></i></a></td>
                         <td>{{priceOye.prices | index:forloop.counter0 }}</td>
                     </tr>
                     
@@ -147,7 +149,7 @@
                     
                     <tr>
                         <td>pakmobizone</td>
-                        <td><a href="{{pakmobizone.links | index:forloop.counter0 }}" target="_blank">{{pakmobizone.names | index:forloop.counter0 }}</a></td>
+                        <td><a href="{{pakmobizone.links | index:forloop.counter0 }}" target="_blank">{{pakmobizone.names | index:forloop.counter0 }} <i class="fas fa-external-link-alt"></i></a></td>
                         <td>{{pakmobizone.prices | index:forloop.counter0 }}</td>
                     </tr>
                     
@@ -164,35 +166,47 @@
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/popper.js' %}"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.bootstrap4.min.js"></script> 
+    {% comment %} <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script> {% endcomment %}
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script> 
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.bootstrap4.min.js"></script> 
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.5/vfs_fonts.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script> 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.5/pdfmake.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.5/vfs_fonts.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://kit.fontawesome.com/c88fca5868.js" crossorigin="anonymous"></script>
     <script>
+
+      function load_paginate(){
+        
+        $(".paginate_button").addClass('btn btn-secondary');
+        $("#myTable_paginate").addClass('btn-group');
+        $("#myTable_paginate span").addClass('btn-group');
+      }
         $(document).ready( function () {
             $('#myTable').DataTable(
                 {
                     dom: 'Bfrtip',
                     buttons: [
                     'copy', 'excel', 'pdf', 'csv'
-                    ]
-                }
+                    ],
+
+                "pageLength": 6,
+                "pagingType": "full_numbers",
+                drawCallback: function () {
+                  load_paginate();
+                  }
+                
+              }
+                
             );
-
-
-            var dt_buttons = document.getElementsByClassName('dt-button');
-            for (var i = 0; i < dt_buttons.length; i++) {
-                dt_buttons[i].className += ' btn btn-sm btn-outline-warning';
-        
-            }
+            $('#myTable').removeClass( 'display' ).addClass('table table-striped table-bordered');  
+           
         } );
-
      var current_url = "{{current_url}}"
       var nav_item = document.getElementsByClassName("nav-item");
       var nav_link = document.getElementsByClassName("nav-link");
@@ -206,9 +220,10 @@
         }
       }
       window.onload = function() {
-        setTimeout(() => {
+        
+        load_paginate();
           document.getElementById("loader").style.display = "none";
-        }, 2000);
+        ;
       };
     </script>
   </body>

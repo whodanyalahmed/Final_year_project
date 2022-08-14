@@ -2,6 +2,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 import os
+import re
+from scrapper_and_analyzer.models import Dataset
 
 
 def Chrome(headless=False):
@@ -25,15 +27,12 @@ def minpr(d):
         return 1
 
 
-minprice = minpr(0)
-minname = ""
-mincount = 0
-
-
 def priceOye_main(keyword, choice):
-    global minprice
-    global minname
-    global mincount
+
+    minprice = minpr(0)
+    minname = ""
+    mincount = 0
+
     price_list = []
     title_list = []
     image_list = []
@@ -48,6 +47,8 @@ def priceOye_main(keyword, choice):
     # print(divs)
     # print(len(divs))
     for div in divs:
+        details = div.find_element_by_xpath(".//div[@class='detail-box']")
+        name = details.find_element_by_class_name("p3")
 
         img = div.find_element_by_xpath(
             './/div[@class="image-box desktop"]/amp-img')
@@ -55,23 +56,32 @@ def priceOye_main(keyword, choice):
             'a').get_attribute('href')
         # get src attribute of amp-img
         src = img.get_attribute("src")
-        image_list.append(src)
+
         # print(src)
-        details = div.find_element_by_xpath(".//div[@class='detail-box']")
-        name = details.find_element_by_class_name("p3")
-        title_list.append(name.text)
-        print("link: "+link)
-        link_list.append(link)
+
         price = details.find_element_by_xpath(".//div[@class='price-box']")
         price = str(price.text)
         price = price.replace("Rs. ", "")
         price = price.replace(",", "")
         price = int(price)
-        price_list.append(price)
 
-        print("name: ", name.text)
-        print("price: ", price)
-        print("image: ", src)
+        obj, created = Dataset.objects.get_or_create(
+            name=name.text, price=price, website="priceOye", link=link, image=src)
+        print("obj and created: ", obj, created)
+        fname = name.text.lower()
+        keyword_name = keyword.lower().split(' ')
+        # get keyword_name except first one
+        keyword_name = keyword_name[1:]
+        if keyword.lower() in fname or re.search('|'.join(keyword_name), fname):
+            title_list.append(name.text)
+            image_list.append(src)
+            link_list.append(link)
+            price_list.append(price)
+
+            print("link: "+link)
+            print("name: ", name.text)
+            print("price: ", price)
+            print("image: ", src)
     dt = dict(zip(title_list, price_list))
 
     for k, v in dt.items():

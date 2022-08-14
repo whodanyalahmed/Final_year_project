@@ -69,9 +69,9 @@
               </li>
               <li class="nav-item"><a href="{% url 'minimum' %}" class="nav-link">Minimum</a></li>
               <li class="nav-item"><a href="{% url 'maximum' %}" class="nav-link">Maximum</a></li>
-              <li class="nav-item active"><a href="{% url 'list' %}" class="nav-link">List</a></li>
-              <li class="nav-item">
-                <a href="{% url 'prediction' %}" class="nav-link">Prediction</a>
+              <li class="nav-item"><a href="{% url 'list' %}" class="nav-link">List</a></li>
+              <li class="nav-item active">
+                <a href="{% url 'prediction' %}" class="nav-link ">Prediction</a>
               </li>
             </ul>
           </div>
@@ -88,11 +88,12 @@
             </div>
         </div>
     </div>
+
     <div class="container d3">
         
       <div class="col justify-content-center">
         <div class="heading">
-          <h2>Enter the Desired <b>PHONE</b> You Wanna Crawl...</h2>
+          <h2>Enter the Desired <b>Date</b> You Wanna get <span class="text-red-500 font-weight-bolder">Prediction</span>...</h2>
         </div>
         <div class="form">
           <form
@@ -109,7 +110,9 @@
                 class="m form-control pl-3"
                 placeholder="Search your product"
                 id="values"
+                required
               />
+              <input type="date" name="date" class="form-control search" required>
               <input type="hidden" name="url" value="{{current_url}}">
               <button type="submit" class="form-control search" id="searchBut">
                 <span class="fa fa-search"></span>
@@ -163,6 +166,8 @@
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <script>
+
+    
 {% comment %} update nav-item class with active class when clicked
  {% endcomment %}
     $(".nav-item").click(function(){

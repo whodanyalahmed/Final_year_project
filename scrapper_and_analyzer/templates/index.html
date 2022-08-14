@@ -4,6 +4,10 @@
   <head>
     <title>Product Scraper & Analyzer | {{current_url}}</title>
     <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %} ">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %} ">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %} ">
+    <link rel="manifest" href="{% static 'images/site.webmanifest' %} ">
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
@@ -43,9 +47,8 @@
         class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light"
         id="ftco-navbar"
         >
-        <div class="container" style="
+        <div class="container nav_container" style="
         margin: 0px auto;
-        height: 65px;
     ">
           <a class="navbar-brand" href="{% url 'Dashboard' %}" style="margin:0px 34px 15px -65px;"><img src="{% static 'images/FYP logo-01.svg' %}" style="height: 50px;margin-top: 10px;margin-left:70px;" ></a>
           <button
@@ -76,7 +79,7 @@
       </nav>
       <!-- END nav -->
     </section>
-    <div class="container mt-lg-5">
+    <div class="container mt-5">
       <div class="row ml-1">
           <div class="text-lg font-medium ml-4 verticalLine" style="height: 25px;">
                   <h1 class="text-white uppercase text-black-50 ml-2">
@@ -116,8 +119,8 @@
       </div>
     </div>
 
-    <div class="container">
-      <div class="row justify-content-between">
+    <div class="container pb-5">
+      <div class="row justify-content-between mb-5">
         <div class="col">
           <a class="navbar-brand" href="{% url 'Dashboard' %}"
             >Product Scraper & Analyzer<span>Crawl your desired phone</span></a

@@ -5,6 +5,10 @@
 <html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %} ">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %} ">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %} ">
+    <link rel="manifest" href="{% static 'images/site.webmanifest' %} ">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product Scraper & Analyzer | {{current_url}}</title>
@@ -30,13 +34,12 @@
       <nav
         class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light"
         id="ftco-navbar"
-      > <div class="container" style="
+      > <div class="container nav_container" style="
       margin: 0px auto;
-      height: 65px;
   ">
         <a class="navbar-brand" href="{% url 'Dashboard' %}" style="margin:0px 34px 15px -65px;"><img src="{% static 'images/FYP logo-01.svg' %}" style="height: 50px;margin-top: 10px;margin-left:70px;" ></a>
       
-        <div class="container">
+     
           
           <button
             class="navbar-toggler"
@@ -61,7 +64,6 @@
                 <a href="{% url 'prediction' %}" class="nav-link">Prediction</a>
               </li>
             </ul>
-          </div>
         </div>
       </nav>
       <!-- END nav -->
@@ -104,74 +106,131 @@
     </div>
     {% elif msg == "success" %}
     {% if current_url == "Dashboard" %}
-    
-    <div class="display" id="dis" style="display:block;">
-      <div class="d-flex justify-content-center h">
-        <div class="card" style="width: 18rem">
-          <div class="card-header">
-            <h5 class="text-center">Minimum Price</h5>
+    {% comment %} <div class="container">
+      <div class="display row" id="dis" style="display:block;">
+        <div class="d-flex justify-content-center ">
+          <div class="col-sm-12"> 
+            <div class="card " style="width: 18rem">
+              <div class="card-header">
+                <h5 class="text-center">Minimum Price</h5>
+              </div>
+              <img class="card-img-top" src="{{min_price_product.src}}" id="img" alt="min image" />
+              <div class="card-body">
+                <h5 class="card-title" id="title">{{min_price_product.name}}</h5>
+                <p class="card-text" id="descmin"></p>
+                <p class="text-green-500 font-weight-bold">Rs. {{min_price_product.price |intcomma}} /=</p>
+                <a href="{{min_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
+              </div>
+            </div>
           </div>
-          <img class="card-img-top" src="{{min_price_product.src}}" id="img" alt="min image" />
-          <div class="card-body">
-            <h5 class="card-title" id="title">{{min_price_product.name}}</h5>
-            <p class="card-text" id="descmin"></p>
-            <p class="text-green-500 font-weight-bold">Rs. {{min_price_product.price |intcomma}} /=</p>
-            <a href="{{min_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
+          <div class="space"></div>
+          <div class="col-sm-12">
+            <div class="card " style="width: 18rem">
+              <div class="card-header">
+                <h5 class="text-center">Maximum Price</h5>
+              </div>
+              <img class="card-img-top" src="{{max_price_product.src}}" id="img1" alt="max image" />
+              <div class="card-body">
+                <h5 class="card-title" id="title1">{{max_price_product.name}}</h5>
+                <p class="card-text" id="descmax"></p>
+                <p class="text-red-600 font-weight-bold">Rs. {{max_price_product.price |intcomma }} /=</p>
+                <a href="{{max_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="space"></div>
-        <div class="card" style="width: 18rem">
-          <div class="card-header">
-            <h5 class="text-center">Maximum Price</h5>
+      </div>
+    </div> {% endcomment %}
+    <div class="container">
+      <div class="row flex justify-center" >
+        <div class="col-lg-4 col-sm-12 mx-xl-5 my-sm-5 my-5">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="text-center">Minimum Price</h5>
+            </div>
+            <img class="card-img-top" src="{{min_price_product.src}}" id="img" alt="min image" />
+            <div class="card-body">
+              <h5 class="card-title" id="title">{{min_price_product.name}}</h5>
+              <p class="card-text" id="descmin"></p>
+              <p class="text-green-500 font-weight-bold">Rs. {{min_price_product.price |intcomma}} /=</p>
+              <a href="{{min_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
+            </div>
           </div>
-          <img class="card-img-top" src="{{max_price_product.src}}" id="img1" alt="max image" />
-          <div class="card-body">
-            <h5 class="card-title" id="title1">{{max_price_product.name}}</h5>
-            <p class="card-text" id="descmax"></p>
-            <p class="text-red-600 font-weight-bold">Rs. {{max_price_product.price |intcomma }} /=</p>
-            <a href="{{max_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
+        </div>
+        <div class="col-lg-4 col-sm-12 mx-xl-5 my-sm-5 my-5">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="text-center">Maximum Price</h5>
+            </div>
+            <img class="card-img-top" src="{{max_price_product.src}}" id="img1" alt="max image" />
+            <div class="card-body">
+              <h5 class="card-title" id="title1">{{max_price_product.name}}</h5>
+              <p class="card-text" id="descmax"></p>
+              <p class="text-red-600 font-weight-bold">Rs. {{max_price_product.price |intcomma }} /=</p>
+              <a href="{{max_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     {% elif current_url == "minimum" %}
-    <div class="display" id="dis" style="display:block;">
-      <div class="d-flex justify-content-center h">
-        <div class="card" style="width: 18rem">
-          <div class="card-header">
-            <h5 class="text-center">Minimum Price</h5>
-          </div>
-          <img class="card-img-top" src="{{min_price_product.src}}" id="img" alt="min image" />
-          <div class="card-body">
-            <h5 class="card-title" id="title">{{min_price_product.name}}</h5>
-            <p class="card-text" id="descmin"></p>
-            <p class="text-green-500 font-weight-bold">Rs. {{min_price_product.price |intcomma}} /=</p>
-            <a href="{{min_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
+    <div class="container">
+      <div class="row flex justify-center" >
+        <div class="col-lg-4 col-sm-12 mx-xl-5 my-sm-5 my-5">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="text-center">Minimum Price</h5>
+            </div>
+            <img class="card-img-top" src="{{min_price_product.src}}" id="img" alt="min image" />
+            <div class="card-body">
+              <h5 class="card-title" id="title">{{min_price_product.name}}</h5>
+              <p class="card-text" id="descmin"></p>
+              <p class="text-green-500 font-weight-bold">Rs. {{min_price_product.price |intcomma}} /=</p>
+              <a href="{{min_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
     {% elif current_url == "maximum" %}
-    <div class="display" id="dis" style="display:block;">
-      <div class="d-flex justify-content-center h">
-        <div class="card" style="width: 18rem">
-          <div class="card-header">
-            <h5 class="text-center">Maximum Price</h5>
-          </div>
-          <img class="card-img-top" src="{{max_price_product.src}}" id="img" alt="min image" />
-          <div class="card-body">
-            <h5 class="card-title" id="title">{{max_price_product.name}}</h5>
-            <p class="card-text" id="descmin"></p>
-            <p class="text-red-500 font-weight-bold">Rs. {{max_price_product.price |intcomma}} /=</p>
-            <a href="{{max_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
+    <div class="container">
+      <div class="row flex justify-center" >
+        <div class="col-lg-4 col-sm-12 mx-xl-5 my-sm-5 my-5">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="text-center">Maximum Price</h5>
+            </div>
+            <img class="card-img-top" src="{{max_price_product.src}}" id="img1" alt="max image" />
+            <div class="card-body">
+              <h5 class="card-title" id="title1">{{max_price_product.name}}</h5>
+              <p class="card-text" id="descmax"></p>
+              <p class="text-red-600 font-weight-bold">Rs. {{max_price_product.price |intcomma }} /=</p>
+              <a href="{{max_price_product.link }}" target="_blank" class="btn btn-primary">Get Details</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
+    {% elif current_url == "prediction" %}
+    <div class="container">
+      <div class="row flex justify-center" >
+        <div class="col-lg-4 col-sm-12 mx-xl-5 my-sm-5 my-5">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="text-center">Predicted Price</h5>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title" id="title1">{{keyword}}</h5>
+              <p class="card-text" id="descmax"></p>
+              <p class="text-secondary font-weight-bold">Rs. {{data |intcomma }} /=</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     {% endif %}
-    
+    {% if current_url != 'prediction'%}
     <div class="container">
       <div class="col-12">
         <table class="table table-striped table-hover">
@@ -185,24 +244,24 @@
           <tbody>
             <tr>
               <td>Daraz.pk</td>
-              <td><a href="{{daraz.link}}" target="_blank">{{ daraz.name }}</a></td>
+              <td><a href="{{daraz.link}}" target="_blank">{{ daraz.name }} <i class="fas fa-external-link-alt"></i></a></td>
               <td>{{ daraz.price |intcomma }}</td>
             </tr>
             <tr>
               <td>PriceOye.pk</td>
-              <td><a href="{{priceOye.link}}" target="_blank">{{ priceOye.name }}</td>
+              <td><a href="{{priceOye.link}}" target="_blank">{{ priceOye.name }} <i class="fas fa-external-link-alt"></i></a></td>
               <td>{{ priceOye.price |intcomma }}</td>
             </tr>
             <tr>
               <td>Pakmobizone</td>
-              <td><a href="{{pakmobizone.link}}" target="_blank">{{ pakmobizone.name }}</td>
+              <td><a href="{{pakmobizone.link}}" target="_blank">{{ pakmobizone.name }} <i class="fas fa-external-link-alt"></i></a></td>
               <td>{{ pakmobizone.price |intcomma}}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-    
+    {% endif %}
     {% endif %}
     <script>
 
@@ -220,9 +279,9 @@
         }
       }
       window.onload = function() {
-        setTimeout(() => {
+        
           document.getElementById("loader").style.display = "none";
-        }, 2000);
+        
       };
     </script>
     <script src="{% static 'js/jquery.min.js' %}"></script>
@@ -230,5 +289,6 @@
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/c88fca5868.js" crossorigin="anonymous"></script>
   </body>
 </html>

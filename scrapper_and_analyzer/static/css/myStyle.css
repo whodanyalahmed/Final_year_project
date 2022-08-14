@@ -77,7 +77,14 @@ body {
     background: #202040 !important;
     z-index: 3;
     padding: 0; }
+
+    @media (min-width: 991.98px) {
+      .nav_container{
+        height:65px;
+      }
+    }
     @media (max-width: 991.98px) {
+
       .ftco-navbar-light {
         background: #000 !important;
         position: relative;
@@ -296,8 +303,45 @@ body {
 }
 
 
-.dt-buttons .dt-button{
+.dt-buttons{
   position: relative !important;
   top: 30px !important;
   margin-right:5px;
+}
+
+.dt-buttons button{
+  color:#6c757d !important;
+}
+.dt-buttons button:hover{
+  color:rgb(236, 236, 236) !important;
+}
+
+#myTable_paginate{
+  position: relative;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  vertical-align: middle;
+}
+/* media query for screen less then 768 */
+@media (max-width: 768px) {
+  #myTable{
+    position: relative;
+    top: 70px;
+  }
+  #myTable_filter{
+    position: absolute;
+    top: 20px;
+  }
+  .dt-buttons {
+    position: relative !important;
+    top: 65px !important;
+    margin-right: 5px;
+}
+#myTable_paginate{
+  margin-top:15px;
+}
+#myTable_info{
+  margin-top:70px;
+}
 }
