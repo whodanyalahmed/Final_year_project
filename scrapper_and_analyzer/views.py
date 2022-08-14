@@ -28,6 +28,11 @@ sys.path.append('../')
 # from ..models import Dataset
 
 
+@register.filter
+def index(sequence, position):
+    return sequence[position]
+
+
 class NumpyEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.ndarray):
@@ -246,6 +251,7 @@ def result(request):
                     # convert to list
                     data = json.loads(data)
                     data = data[0]
+                    data = int(data)
 
                     # save values in session
                     request.session['data'] = data
@@ -256,6 +262,7 @@ def result(request):
                     print(e)
                     return render(request, 'results.html', context={'msg': "error", "text": "Can't find the product or may not exist!"})
             else:
+                print("in else")
                 try:
 
                     priceOye = priceOye_main(keyword, "list")
@@ -297,7 +304,6 @@ def result(request):
                 data = request.session['data']
                 keyword = request.session['keyword']
 
-
                 return render(request, 'results.html', context={'msg': "success", 'data': data, 'current_url': current_url, 'keyword': keyword})
             else:
                 return redirect('list_result')
@@ -308,12 +314,14 @@ def result(request):
 def list_results(request):
     # get values fromm session
     try:
-
+        print("in list_results")
         daraz = request.session['daraz']
         priceOye = request.session['priceOye']
         pakmobizone = request.session['pakmobizone']
         current_url = request.session['current_url']
-
+        print(daraz)
+        print(priceOye)
+        print(pakmobizone)
         # daraz = json.dumps(daraz)
         # priceOye = json.dumps(priceOye)
         # pakmobizone = json.dumps(pakmobizone)
@@ -325,5 +333,6 @@ def list_results(request):
         pakmobizone_range = len(pakmobizone['names'])
 
         return render(request, 'list_results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "current_url": current_url, "daraz_range": daraz_range, "priceOye_range": priceOye_range, "pakmobizone_range": pakmobizone_range})
-    except:
+    except Exception as e:
+        print(e)
         return redirect('Dashboard')
