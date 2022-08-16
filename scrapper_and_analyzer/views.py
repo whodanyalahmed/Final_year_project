@@ -54,7 +54,6 @@ def get_predicted_price(request):
             # add to df
             new_date = pd.DataFrame(new_date)
             # convert to float
-            print(new_date)
             # convert to date
 
             # select all the data with the keyword
@@ -74,9 +73,10 @@ def get_predicted_price(request):
             data = cursor.execute(query)
             data = cursor.fetchall()
             cursor.close()
-
+            # c;pse all connections
+            connection.close()
             # searialize the data
-            print(data)
+
             # print(data)
             # # get the dataframe
             # get 4 columns name,price,fetched_date
@@ -87,7 +87,7 @@ def get_predicted_price(request):
             x = df['fetched_date'].dt.date
             # convert x to .astype("datetime64[ns]")
             x = x.astype("datetime64[ns]")
-            print(x)
+
             # get date column
             # x = df['fetched_date'].astype("datetime64[ns]")
             # reshape the data
@@ -100,7 +100,7 @@ def get_predicted_price(request):
             # reshape new_date to 2d array
             new_date = new_date.values.reshape(-1, 1)
             new_date = [[float(new_date)]]
-            print(new_date)
+
             # model = LinearRegression()
             # model.fit(x, y)
             # r_sq = model.score(x.astype('float64'), y)
@@ -269,8 +269,6 @@ def result(request):
                 try:
                     data = get_predicted_price(request)
 
-                    print(data)
-                    print(type(data))
                     if(isinstance(data, dict)):
                         priceOye_main(keyword, "list")
                         daraz_main(keyword, "list")
@@ -287,11 +285,11 @@ def result(request):
                     request.session['current_url'] = current_url
                     request.session['keyword'] = keyword
                     return render(request, 'results.html', context={'msg': "success", 'data': data, 'current_url': current_url, 'keyword': keyword})
+
                 except Exception as e:
-                    print(e)
+                    print("Exception at pred: ", str(e))
                     return render(request, 'results.html', context={'msg': "error", "text": "Can't find the product or may not exist!"})
             else:
-                print("in else")
                 try:
 
                     priceOye = priceOye_main(keyword, "list")
@@ -343,7 +341,6 @@ def result(request):
 def list_results(request):
     # get values fromm session
     try:
-        print("in list_results")
         daraz = request.session['daraz']
         priceOye = request.session['priceOye']
         pakmobizone = request.session['pakmobizone']
