@@ -22,6 +22,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
+from django.db import connection
 
 
 sys.path.append('../')
@@ -57,12 +58,31 @@ def get_predicted_price(request):
             # convert to date
 
             # select all the data with the keyword
-            data = Dataset.objects.filter(name__contains=keyword)
+            # SELECT *
+            # FROM `table`
+            # WHERE `column` LIKE '%{$needle}%'
+            # trim the data
+            formatted_data = str(keyword).strip()
+            formatted_keyword = formatted_data.replace(' ', '%')
+            formatted_keyword = '%' + formatted_keyword + '%'
+            formatted_keyword = formatted_keyword.lower()
+            # print(formatted_keyword)
+            query = "SELECT * FROM scrapper_and_analyzer_dataset WHERE name like '" + \
+                formatted_keyword+"'"
+
+            cursor = connection.cursor()
+            data = cursor.execute(query)
+            data = cursor.fetchall()
+            cursor.close()
+
             # searialize the data
-            data = list(data.values())
+            print(data)
+            # print(data)
             # # get the dataframe
+            # get 4 columns name,price,fetched_date
             df = pd.DataFrame(data)
-            print(df)
+            df.rename(columns={1: 'name', 2: 'price',
+                      6: 'fetched_date'}, inplace=True)
             y = df['price'].astype("float64")
             x = df['fetched_date'].dt.date
             # convert x to .astype("datetime64[ns]")
@@ -121,8 +141,8 @@ def get_predicted_price(request):
 
             return rf_y_pre
         except Exception as e:
-            print(e)
-            return JsonResponse({"error": "Something went wrong"}, status=500)
+            print("exception: "+str(e))
+            return {"error": "Something went wrong"}
 
 
 @ cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -248,6 +268,15 @@ def result(request):
             elif current_url == "prediction":
                 try:
                     data = get_predicted_price(request)
+
+                    print(data)
+                    print(type(data))
+                    if(isinstance(data, dict)):
+                        priceOye_main(keyword, "list")
+                        daraz_main(keyword, "list")
+                        pakmobizone_main(keyword, "list")
+
+                        data = get_predicted_price(request)
                     # convert to list
                     data = json.loads(data)
                     data = data[0]
