@@ -18,7 +18,7 @@ def Chrome(headless=False):
     chrome_options.add_argument("--no-sandbox")
     driver = webdriver.Chrome(executable_path=os.environ.get(
         "CHROMEDRIVER_PATH"), options=chrome_options)
-    driver.implicitly_wait(10)
+    driver.implicitly_wait(5)
     return driver
 
 

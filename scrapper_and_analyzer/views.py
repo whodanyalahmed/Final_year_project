@@ -22,6 +22,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
+from django.db import connection
 
 
 sys.path.append('../')
@@ -53,21 +54,40 @@ def get_predicted_price(request):
             # add to df
             new_date = pd.DataFrame(new_date)
             # convert to float
-            print(new_date)
             # convert to date
 
             # select all the data with the keyword
-            data = Dataset.objects.filter(name__contains=keyword)
+            # SELECT *
+            # FROM `table`
+            # WHERE `column` LIKE '%{$needle}%'
+            # trim the data
+            formatted_data = str(keyword).strip()
+            formatted_keyword = formatted_data.replace(' ', '%')
+            formatted_keyword = '%' + formatted_keyword + '%'
+            formatted_keyword = formatted_keyword.lower()
+            # print(formatted_keyword)
+            query = "SELECT * FROM scrapper_and_analyzer_dataset WHERE name like '" + \
+                formatted_keyword+"'"
+
+            cursor = connection.cursor()
+            data = cursor.execute(query)
+            data = cursor.fetchall()
+            cursor.close()
+            # c;pse all connections
+            connection.close()
             # searialize the data
-            data = list(data.values())
+
+            # print(data)
             # # get the dataframe
+            # get 4 columns name,price,fetched_date
             df = pd.DataFrame(data)
-            print(df)
+            df.rename(columns={1: 'name', 2: 'price',
+                      6: 'fetched_date'}, inplace=True)
             y = df['price'].astype("float64")
             x = df['fetched_date'].dt.date
             # convert x to .astype("datetime64[ns]")
             x = x.astype("datetime64[ns]")
-            print(x)
+
             # get date column
             # x = df['fetched_date'].astype("datetime64[ns]")
             # reshape the data
@@ -80,7 +100,7 @@ def get_predicted_price(request):
             # reshape new_date to 2d array
             new_date = new_date.values.reshape(-1, 1)
             new_date = [[float(new_date)]]
-            print(new_date)
+
             # model = LinearRegression()
             # model.fit(x, y)
             # r_sq = model.score(x.astype('float64'), y)
@@ -121,8 +141,8 @@ def get_predicted_price(request):
 
             return rf_y_pre
         except Exception as e:
-            print(e)
-            return JsonResponse({"error": "Something went wrong"}, status=500)
+            print("exception: "+str(e))
+            return {"error": "Something went wrong"}
 
 
 @ cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -198,6 +218,8 @@ def result(request):
             # call scrapper function
             print("current_url: ", current_url)
             if (current_url != 'list' and current_url != 'prediction'):
+                
+                request.session['current_url'] = current_url
                 try:
                     try:
 
@@ -207,7 +229,7 @@ def result(request):
                         priceOye = {
                             "name": "No Product found",
                             "price": Infinity,
-                            "src": "static/images/not_found.svg"
+                            "src": "static/images/data-not-found.gif"
                         }
                     try:
                         daraz = daraz_main(keyword, "result")
@@ -216,7 +238,7 @@ def result(request):
                         daraz = {
                             "name": "No Product found",
                             "price": Infinity,
-                            "src": "static/images/not_found.svg"
+                            "src": "static/images/data-not-found.gif"
                         }
                     try:
 
@@ -226,7 +248,7 @@ def result(request):
                         pakmobizone = {
                             "name": "No Product found",
                             "price": Infinity,
-                            "src": "static/images/not_found.svg"
+                            "src": "static/images/data-not-found.gif"
                         }
 
                     if(daraz['name'] == "No Product found" and priceOye['name'] == "No Product found" and pakmobizone['name'] == "No Product found"):
@@ -238,16 +260,24 @@ def result(request):
                     request.session['daraz'] = daraz
                     request.session['priceOye'] = priceOye
                     request.session['pakmobizone'] = pakmobizone
-                    request.session['current_url'] = current_url
                     # if anyone is infinity
                     min_price_product, max_price_product = get_min_max_price(
                         daraz, priceOye, pakmobizone)
+                    print("min_price_product: ", min_price_product)
+                    print("max_price_product: ", max_price_product)
                     return render(request, 'results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "min_price_product": min_price_product, "max_price_product": max_price_product, "current_url": current_url})
                 except Exception as e:
                     return render(request, 'results.html', context={'msg': "error", "text": "Can't find the product or may not exist!"})
             elif current_url == "prediction":
                 try:
                     data = get_predicted_price(request)
+
+                    if(isinstance(data, dict)):
+                        priceOye_main(keyword, "list")
+                        daraz_main(keyword, "list")
+                        pakmobizone_main(keyword, "list")
+
+                        data = get_predicted_price(request)
                     # convert to list
                     data = json.loads(data)
                     data = data[0]
@@ -258,11 +288,11 @@ def result(request):
                     request.session['current_url'] = current_url
                     request.session['keyword'] = keyword
                     return render(request, 'results.html', context={'msg': "success", 'data': data, 'current_url': current_url, 'keyword': keyword})
+
                 except Exception as e:
-                    print(e)
+                    print("Exception at pred: ", str(e))
                     return render(request, 'results.html', context={'msg': "error", "text": "Can't find the product or may not exist!"})
             else:
-                print("in else")
                 try:
 
                     priceOye = priceOye_main(keyword, "list")
@@ -314,7 +344,6 @@ def result(request):
 def list_results(request):
     # get values fromm session
     try:
-        print("in list_results")
         daraz = request.session['daraz']
         priceOye = request.session['priceOye']
         pakmobizone = request.session['pakmobizone']
