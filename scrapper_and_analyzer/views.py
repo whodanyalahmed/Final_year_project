@@ -262,6 +262,8 @@ def result(request):
                     # if anyone is infinity
                     min_price_product, max_price_product = get_min_max_price(
                         daraz, priceOye, pakmobizone)
+                    print("min_price_product: ", min_price_product)
+                    print("max_price_product: ", max_price_product)
                     return render(request, 'results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "min_price_product": min_price_product, "max_price_product": max_price_product, "current_url": current_url})
                 except Exception as e:
                     return render(request, 'results.html', context={'msg': "error", "text": "Can't find the product or may not exist!"})
