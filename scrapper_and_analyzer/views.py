@@ -218,6 +218,8 @@ def result(request):
             # call scrapper function
             print("current_url: ", current_url)
             if (current_url != 'list' and current_url != 'prediction'):
+                
+                request.session['current_url'] = current_url
                 try:
                     try:
 
@@ -258,7 +260,6 @@ def result(request):
                     request.session['daraz'] = daraz
                     request.session['priceOye'] = priceOye
                     request.session['pakmobizone'] = pakmobizone
-                    request.session['current_url'] = current_url
                     # if anyone is infinity
                     min_price_product, max_price_product = get_min_max_price(
                         daraz, priceOye, pakmobizone)
