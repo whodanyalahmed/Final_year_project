@@ -1,1 +1,1 @@
-web: python manage.py collectstatic --no-input; gunicorn FYP.wsgi --workers=3
+web: python manage.py collectstatic --no-input; gunicorn FYP.wsgi --workers=3 --graceful-timeout 200 --keep-alive 5 --threads 4
