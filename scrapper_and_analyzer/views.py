@@ -229,7 +229,7 @@ def result(request):
                         priceOye = {
                             "name": "No Product found",
                             "price": Infinity,
-                            "src": "static/images/not_found.svg"
+                            "src": "static/images/data-not-found.gif"
                         }
                     try:
                         daraz = daraz_main(keyword, "result")
@@ -238,7 +238,7 @@ def result(request):
                         daraz = {
                             "name": "No Product found",
                             "price": Infinity,
-                            "src": "static/images/not_found.svg"
+                            "src": "static/images/data-not-found.gif"
                         }
                     try:
 
@@ -248,7 +248,7 @@ def result(request):
                         pakmobizone = {
                             "name": "No Product found",
                             "price": Infinity,
-                            "src": "static/images/not_found.svg"
+                            "src": "static/images/data-not-found.gif"
                         }
 
                     if(daraz['name'] == "No Product found" and priceOye['name'] == "No Product found" and pakmobizone['name'] == "No Product found"):
