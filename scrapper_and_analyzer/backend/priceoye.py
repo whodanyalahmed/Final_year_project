@@ -67,7 +67,6 @@ def priceOye_main(keyword, choice):
 
         obj, created = Dataset.objects.get_or_create(
             name=name.text, price=price, website="priceOye", link=link, image=src)
-        print("obj and created: ", obj, created)
         fname = name.text.lower()
         keyword_name = keyword.lower().split(' ')
         # get keyword_name except first one
@@ -77,11 +76,6 @@ def priceOye_main(keyword, choice):
             image_list.append(src)
             link_list.append(link)
             price_list.append(price)
-
-            print("link: "+link)
-            print("name: ", name.text)
-            print("price: ", price)
-            print("image: ", src)
     dt = dict(zip(title_list, price_list))
 
     for k, v in dt.items():

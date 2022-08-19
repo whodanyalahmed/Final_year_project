@@ -45,9 +45,9 @@ def daraz_main(keyword, choice):
         '//div[@data-qa-locator="general-products"]')
     products_card = product_div.find_elements_by_xpath(
         '//div[@class="gridItem--Yd0sa"]')
-    print(len(products_card))
 
-    print("="*30)
+
+
     product = product_div.find_elements_by_xpath(
         '//div[@class="inner--SODwy"]')
 
@@ -60,9 +60,7 @@ def daraz_main(keyword, choice):
     # get img with class image--WOyuZ and also have alt attribute
     img_Src = product_div.find_elements_by_xpath(
         '//img[@class="image--WOyuZ " and @alt]')
-    print(len(title))
-    print(len(price))
-    print(len(img_Src))
+
     price_list = []
     title_list = []
     image_list = []
@@ -77,27 +75,22 @@ def daraz_main(keyword, choice):
 
         obj, created = Dataset.objects.get_or_create(
             name=title[i].text, price=int_price, website='daraz', image=img_Src[i].get_attribute('src'), link=link)
-        print("obj and created: ", obj, created)
+
         fname = title[i].text.lower()
         keyword_name = keyword.lower().split(' ')
         # get keyword_name except first one
         # keyword_name = keyword_name[1:]
         if keyword.lower() in fname:
 
-            print("="*30)
-            print("link: "+str(link))
             link_list.append(link)
-            print(title[i].text)
             # check if same price is found then skip
             title_list.append(title[i].text)
-            print(price[i].text)
+
             price_list.append(int_price)
-            print(img_Src[i].get_attribute('src'))
             image_list.append(img_Src[i].get_attribute('src'))
 
     # print(product.text)
     dt = dict(zip(title_list, price_list))
-    print(dt)
 
     for k, v in dt.items():
 
@@ -110,7 +103,6 @@ def daraz_main(keyword, choice):
     # return minprice,minname and iamge_link with mincount as index
 
     driver.quit()
-    print(price_list)
     index = price_list.index(minprice)
     if choice == "result":
 

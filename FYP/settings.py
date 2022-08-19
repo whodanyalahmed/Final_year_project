@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'scrapper_and_analyzer',
     'django.contrib.humanize',
+    'django_q',
 ]
 
 MIDDLEWARE = [
