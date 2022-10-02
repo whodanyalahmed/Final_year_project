@@ -1,3 +1,4 @@
+import asyncio
 from datetime import datetime
 from django.http import JsonResponse
 from scrapper_and_analyzer.models import Dataset
@@ -23,7 +24,8 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from django.db import connection
-
+from threading import Thread
+from asgiref.sync import sync_to_async
 
 sys.path.append('../')
 # from ..models import Dataset
@@ -32,6 +34,14 @@ sys.path.append('../')
 @register.filter
 def index(sequence, position):
     return sequence[position]
+
+
+def start_new_thread(function):
+    def decorator(*args, **kwargs):
+        t = Thread(target=function, args=args, kwargs=kwargs)
+        t.daemon = True
+        t.start()
+    return decorator
 
 
 class NumpyEncoder(json.JSONEncoder):

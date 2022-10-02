@@ -4,8 +4,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 import os
 import re
-
 from scrapper_and_analyzer.models import Dataset
+
 
 
 def Chrome(headless=False):
@@ -43,9 +43,11 @@ def pakmobizone_main(keyword, choice):
     image_list = []
     link_list = []
     keyword_url = keyword.replace(' ', '+')
+    
     driver = Chrome(True)
     driver.implicitly_wait(25)
     url = 'https://www.pakmobizone.pk/?s={}&products=true'.format(keyword_url)
+        
     driver.get(url)
     qt_main = driver.find_element_by_id("qt-main")
 
