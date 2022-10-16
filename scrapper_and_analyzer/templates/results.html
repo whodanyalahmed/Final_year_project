@@ -213,22 +213,17 @@
       </div>
     </div>
     {% elif current_url == "prediction" %}
-    <div class="container">
+    <div class="container-fluid">
       <div class="row flex justify-center" >
-        <div class="col-lg-4 col-sm-12 mx-xl-5 my-sm-5 my-5">
-          <div class="card">
-            <div class="card-header">
-              <h5 class="text-center">Predicted Price</h5>
-            </div>
-            <div class="card-body">
-              <h5 class="card-title" id="title1">{{keyword}}</h5>
-              <p class="card-text" id="descmax"></p>
-              <p class="text-secondary font-weight-bold">Rs. {{data |intcomma }} /=</p>
-            </div>
-          </div>
+        <div class="p-10 px-14 mt-5 max-w-full w-3/5 bg-white rounded-xl border border-gray-200 shadow-xl  dark:bg-gray-800 dark:border-gray-700">
+          <a href="#">
+              <h5 class="mb-2 text-5xl font-bold tracking-tight text-gray-900 dark:text-dark">Predicted Price</h5>
+          </a>
+          <p class="mb-3 mt-3 font-normal text-xl text-gray-700 dark:text-gray-400">The predicted price of {{keyword}} is: <br><span class="font-weight-bold">Rs. {{data |intcomma }} /=</span</p>
         </div>
       </div>
     </div>
+
     {% endif %}
     {% if current_url != 'prediction'%}
     <div class="container">
