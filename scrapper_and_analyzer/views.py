@@ -370,8 +370,13 @@ def list_results(request):
         priceOye_range = len(priceOye['names'])
         # pakmobizone range
         pakmobizone_range = len(pakmobizone['names'])
-
-        return render(request, 'list_results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "current_url": current_url, "daraz_range": daraz_range, "priceOye_range": priceOye_range, "pakmobizone_range": pakmobizone_range})
+        total_names = daraz['names']
+        total_names.extend(priceOye['names'])
+        total_names.extend(pakmobizone['names'])
+        total_prices = daraz['prices']
+        total_prices.extend(priceOye['prices'])
+        total_prices.extend(pakmobizone['prices'])
+        return render(request, 'list_results.html', context={'msg': "success", 'daraz': daraz, 'priceOye': priceOye, "pakmobizone": pakmobizone, "current_url": current_url, "daraz_range": daraz_range, "priceOye_range": priceOye_range, "pakmobizone_range": pakmobizone_range,"total_names":total_names,"total_prices":total_prices})
     except Exception as e:
         print(e)
         return redirect('Dashboard')

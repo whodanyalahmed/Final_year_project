@@ -22,6 +22,8 @@
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
     />
+    
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" 
     href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css"
     />
@@ -166,6 +168,7 @@
           </tbody>
         </table>
       </div>
+      <canvas class="tw-mt-20" id="myChart"></canvas>
     </div>
     
     {% endif %}
@@ -187,7 +190,30 @@
     
     <script src="https://kit.fontawesome.com/c88fca5868.js" crossorigin="anonymous"></script>
     <script>
-
+      console.log({{total_names | safe}})
+      console.log({{total_prices| safe}})
+      const ctx = document.getElementById('myChart');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: {{total_names | safe}},
+          datasets: [{
+            label: 'Price',
+            data: {{total_prices | safe}},
+            borderWidth: 1,
+            backgroundColor: '#BB9B6B',
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          scales: {
+            x: {
+              stacked: true
+          },
+            
+          }
+        }
+      });
       function load_paginate(){
         
         $(".paginate_button").addClass('btn btn-secondary');
