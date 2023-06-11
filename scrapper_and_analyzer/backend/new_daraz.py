@@ -1,8 +1,8 @@
 from selenium import webdriver
 import os
 import re
-from scrapper_and_analyzer.models import Dataset
-
+# from scrapper_and_analyzer.models import Dataset
+# from asgiref.sync import sync_to_async
 chrome_bin = os.environ.get("GOOGLE_CHROME_BIN")
 chromedriver_path = os.environ.get("CHROMEDRIVER_PATH")
 
@@ -27,6 +27,8 @@ def minpr(d):
     else:
         return 1
 
+# @sync_to_async
+
 
 def daraz_main(keyword, choice):
     minprice = minpr(0)
@@ -34,10 +36,9 @@ def daraz_main(keyword, choice):
     mincount = 0
 
     keyword_url = keyword.replace(' ', '+')
-
+    driver = Chrome(True)
     url = 'https://www.daraz.pk/smartphones/?from=input&q=' + keyword_url
 
-    driver = Chrome(True)
     driver.get(url)
     # find div with id root
     root = driver.find_element_by_id('root')
@@ -47,8 +48,6 @@ def daraz_main(keyword, choice):
         '//div[@data-qa-locator="general-products"]')
     products_card = product_div.find_elements_by_xpath(
         '//div[@class="gridItem--Yd0sa"]')
-
-
 
     product = product_div.find_elements_by_xpath(
         '//div[@class="inner--SODwy"]')
@@ -75,8 +74,8 @@ def daraz_main(keyword, choice):
         int_price = int_price.replace(',', '')
         int_price = int(int_price)
 
-        obj, created = Dataset.objects.get_or_create(
-            name=title[i].text, price=int_price, website='daraz', image=img_Src[i].get_attribute('src'), link=link)
+        # obj, created = Dataset.objects.get_or_create(
+        #     name=title[i].text, price=int_price, website='daraz', image=img_Src[i].get_attribute('src'), link=link)
 
         fname = title[i].text.lower()
         keyword_name = keyword.lower().split(' ')
@@ -114,5 +113,5 @@ def daraz_main(keyword, choice):
 
 
 if __name__ == '__main__':
-    d = daraz_main("Iphone 13")
+    d = daraz_main("Iphone 13", "result")
     print(d)

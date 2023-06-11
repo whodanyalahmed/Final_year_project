@@ -1,10 +1,11 @@
+from lib2to3.pgen2.driver import Driver
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 import os
 import re
-from scrapper_and_analyzer.models import Dataset
 
+from scrapper_and_analyzer.models import Dataset
 
 def Chrome(headless=False):
     # add fake user agent
@@ -38,9 +39,10 @@ def priceOye_main(keyword, choice):
     image_list = []
     link_list = []
     keyword_url = keyword.replace(' ', '+')
-    driver = Chrome(True)
     url = 'https://priceoye.pk/search?q=' + keyword_url
     # print(url)
+    
+    driver = Chrome(True)
     driver.get(url)
     # product_list = driver.find_element_by_class_name("product-list")
     divs = driver.find_elements_by_xpath(".//div[@class='product-list']/div")
@@ -67,7 +69,6 @@ def priceOye_main(keyword, choice):
 
         obj, created = Dataset.objects.get_or_create(
             name=name.text, price=price, website="priceOye", link=link, image=src)
-        print("obj and created: ", obj, created)
         fname = name.text.lower()
         keyword_name = keyword.lower().split(' ')
         # get keyword_name except first one
@@ -77,11 +78,6 @@ def priceOye_main(keyword, choice):
             image_list.append(src)
             link_list.append(link)
             price_list.append(price)
-
-            print("link: "+link)
-            print("name: ", name.text)
-            print("price: ", price)
-            print("image: ", src)
     dt = dict(zip(title_list, price_list))
 
     for k, v in dt.items():

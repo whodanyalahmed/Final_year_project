@@ -1,7 +1,7 @@
 selenium==3.141.0
 numpy
 pandas
-django
+django==3.2
 django-q
 redis
 gunicorn
