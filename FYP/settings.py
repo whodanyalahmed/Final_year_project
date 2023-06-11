@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'scrapper_and_analyzer',
     'django.contrib.humanize',
+    'django_q',
 ]
 
 MIDDLEWARE = [
@@ -134,7 +136,7 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 
 Q_CLUSTER = {
     'name': 'myproject',
@@ -153,4 +155,6 @@ Q_CLUSTER = {
 }
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'scrapper_and_analyzer/static'),
+]

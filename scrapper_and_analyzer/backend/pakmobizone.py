@@ -4,8 +4,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 import os
 import re
-
 from scrapper_and_analyzer.models import Dataset
+
 
 
 def Chrome(headless=False):
@@ -43,10 +43,11 @@ def pakmobizone_main(keyword, choice):
     image_list = []
     link_list = []
     keyword_url = keyword.replace(' ', '+')
+    
     driver = Chrome(True)
     driver.implicitly_wait(25)
     url = 'https://www.pakmobizone.pk/?s={}&products=true'.format(keyword_url)
-    print(url)
+        
     driver.get(url)
     qt_main = driver.find_element_by_id("qt-main")
 
@@ -72,7 +73,6 @@ def pakmobizone_main(keyword, choice):
 
         obj, created = Dataset.objects.get_or_create(
             name=name.text, price=price, website="pakmobizone", link=link, image=image)
-        print("obj and created: ", obj, created)
         fname = name.text.lower()
         keyword_name = keyword.lower().split(' ')
         # get keyword_name except first one
@@ -82,23 +82,15 @@ def pakmobizone_main(keyword, choice):
             title_list.append(name.text)
             image_list.append(image)
             link_list.append(link)
-
-            print("Product name is: " + name.text)
-            print("Product price is: Rs." + str(price))
-            print("Product image is: " + image)
-            print("Product link is: " + link)
-
     dt = dict(zip(title_list, price_list))
-    print(dt)
-
     for k, v in dt.items():
         if v < minprice:
             minprice = v
             minname = k
-    print("="*50)
+
     print("Min. name is : ", minname)
     print("Min. price is : ", minprice)
-    print("="*50)
+
     # find div with id root
     driver.quit()
     index = price_list.index(minprice)
